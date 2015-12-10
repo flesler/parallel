@@ -1,0 +1,21 @@
+{
+  "name": "parallel-cli",
+  "author": "Ariel Flesler <aflesler@gmail.com>",
+  "version": "1.0.0",
+  "description": "Execute shell command lines from standard input in parallel",
+  "keywords": ["parallel", "cli", "concurrent", "commands", "gnu", "execute", "standard", "input", "stdin"],
+  "license": "MIT",
+  "homepage": "https://github.com/flesler/parallel",
+  "bugs": "https://github.com/flesler/parallel/issues",
+  "repository": "git://github.com/flesler/parallel",
+  "main": "./bin/parallel.js",
+  "preferGlobal": true,
+  "bin": {
+    "parallel": "./bin/parallel.js"
+  },
+  "engines": {
+    "node": "*"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
