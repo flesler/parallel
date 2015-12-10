@@ -45,7 +45,7 @@ find . -name "*.gz" -print0 | parallel -0n 10 gzip -dc {} > out
 echo {000..100} | parallel -vn 0 -d " " echo file{}.png
 ```
 ```bash
-seq 20 | parallel.js -svj 2 -n 2 sleep 1 ; echo -{}-
+seq 20 | parallel.js -svj 2 -n 2 sleep 1 \; echo -{}-
 ```
 
 # Replacements
