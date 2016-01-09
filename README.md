@@ -101,6 +101,8 @@ find . -type f | parallel echo "file={} noext={.} base={/} base_noext={/.} dir={
 - Implement backpressure to pause input if output is overwhelmed
 - Change option parser to support this format: `-j2` ?
 - Show help when nothing is piped in, `process.stdin.isTTY` not working as expected
+- Maybe avoid pre-spawning jobs when piping. Spawn on demand instead.
+- Support `--jobs=0` for unlimited. Easy except when piping or when `--max-args=0`
 
 # License
 
