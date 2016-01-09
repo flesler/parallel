@@ -1,5 +1,5 @@
 {
-  "name": "parallel-cli",
+  "name": "parallel",
   "author": "Ariel Flesler <aflesler@gmail.com>",
   "version": "1.0.0",
   "description": "Execute shell command lines from standard input in parallel",

@@ -15,4 +15,4 @@ if (opts.pipeMode) {
 	jobs.spawnPiped();
 }
 
-input.open(opts.src);
+input.open();
