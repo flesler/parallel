@@ -1,3 +1,6 @@
+# 1.0.3
+- Added support for `--delay <sec>` option, wait sec seconds before running a new job
+
 # 1.0.2
 - Added support for `--bg` option, jobs are run detached and main process can exit
 
