@@ -33,6 +33,7 @@ input | parallel [options] --pipe cmd [cmd-options] > output
 -t, --trim              Trims the input of leading and trailing spaces and tabs [default false]
 -a, --arg-file <file>   Use file as input source instead of stdin
 -p, --pipe              Spread input lines to jobs via their stdin
+-b, --bg                Run commands in background and exit
 -v, --verbose           Output additional information to stderr
 -s, --shell             Wrap command with shell (supports escaped pipes, redirection, etc.) [experimental]
 --help              Print this message and exit
@@ -95,7 +96,8 @@ find . -type f | parallel echo "file={} noext={.} base={/} base_noext={/.} dir={
 # ToDo
 - Support more options from [GNU parallel](https://www.gnu.org/software/parallel/man.html)
 - Support more [placeholders](https://www.gnu.org/software/parallel/man.html#OPTIONS)
-- Maybe support `:::`
+- Maybe support `:::` and `::::`, seems pointless
+- Support multiple `-a`, can be achieve with `cat a b c` though
 - Implement backpressure to pause input if output is overwhelmed
 - Change option parser to support this format: `-j2` ?
 - Show help when nothing is piped in, `process.stdin.isTTY` not working as expected

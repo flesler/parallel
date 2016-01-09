@@ -1,2 +1,8 @@
+# 1.0.2
+- Added support for `--bg` option, jobs are run detached and main process can exit
+
+# 1.0.1
+- Reworded `replacement` as `placeholder` across the board, it's a more suitable name
+
 # 1.0.0
 - First release
