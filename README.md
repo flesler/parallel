@@ -39,12 +39,11 @@ input | parallel [options] --pipe cmd [cmd-options] > output
 --version           Print the comand version and exit
 ```
 
-# Arguments replacements
+# Arguments placeholders
 
-- When `--pipe` is omitted, the input lines will replace each `{}` found in the command
-- If no `{}` is found, lines will be appended to the end
-- If `{}` is within other parameters, all lines will be placed between them
-- Any characters before or after `{}` will be used for each line, use quotes for spaces
+Unless `--pipe` is used, the input lines will be sent to jobs as command-line arguments. You can include placeholders and they will be replaced with each input line.
+If no placeholder is found, input lines will be appended to the end as last arguments.
+Everything around each placeholder will be repeated for each line. Use quotes to include spaces.
 
 ```
 {}   the input line
@@ -79,7 +78,7 @@ find . -name '*.txt' | parallel mv {} {.}.log
 find . -type f | parallel mkdir -p {//}/sub && mv {} {//}/sub/{/}
 ```
 ```bash
-# Showcase all replacements
+# Showcase all placeholders
 find . -type f | parallel echo "file={} noext={.} base={/} base_noext={/.} dir={//} jobid={#} jobslot={%}"
 ```
 
@@ -90,12 +89,12 @@ find . -type f | parallel echo "file={} noext={.} base={/} base_noext={/.} dir={
 - `--shell` was added to allow pipes, redirection, etc
 - `--trim` doesn't support `<n|l|r|lr|rl>`, it trims all spaces, tabs and newlines from both sides
 - A ton of missing options that I consider less useful
-- Some replacements aren't supported
+- Some placeholders aren't supported
 - Many more
 
 # ToDo
 - Support more options from [GNU parallel](https://www.gnu.org/software/parallel/man.html)
-- Support more [replacements](https://www.gnu.org/software/parallel/man.html#OPTIONS)
+- Support more [placeholders](https://www.gnu.org/software/parallel/man.html#OPTIONS)
 - Maybe support `:::`
 - Implement backpressure to pause input if output is overwhelmed
 - Change option parser to support this format: `-j2` ?
