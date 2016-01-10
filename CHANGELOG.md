@@ -1,3 +1,6 @@
+# 1.0.4
+- Added support for `--timeout <sec>` option, kill jobs with SIGTERM if they take too long
+
 # 1.0.3
 - Added support for `--delay <sec>` option, wait sec seconds before running a new job
 

@@ -35,7 +35,8 @@ input | parallel [options] --pipe cmd [cmd-options] > output
 -p, --pipe              Spread input lines to jobs via their stdin
 --bg                    Run commands in background and exit
 --delay <secs>          Wait before starting new jobs, secs can be less than 1 [default 0]
--v, --verbose           Output additional information to stderr
+--timeout <secs>        If the command runs longer than secs it gets killed with SIGTERM [default 0]
+-v, --verbose           Output timing information to stderr
 -s, --shell             Wrap command with shell (supports escaped pipes, redirection, etc.) [experimental]
 --help              Print this message and exit
 --version           Print the comand version and exit
@@ -98,13 +99,12 @@ find . -type f | parallel echo "file={} noext={.} base={/} base_noext={/.} dir={
 - Support more options from [GNU parallel](https://www.gnu.org/software/parallel/man.html)
 - Support more [placeholders](https://www.gnu.org/software/parallel/man.html#OPTIONS)
 - Maybe support `:::` and `::::`, seems pointless
-- Support multiple `-a`, can be achieve with `cat a b c` though
+- Support multiple `-a`, can be achieved with `cat a b c` though
 - Implement backpressure to pause input if output is overwhelmed
 - Change option parser to support this format: `-j2` ?
 - Show help when nothing is piped in, `process.stdin.isTTY` not working as expected
 - Maybe avoid pre-spawning jobs when piping. Spawn on demand when overwhelmed, support `--delay` there too
 - Support `--jobs=0` for unlimited. Easy except when piping or when `--max-args=0`
-- Could implement `--timeout <sec>`
 
 # License
 
