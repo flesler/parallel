@@ -11,6 +11,7 @@ Using npm:
 ```bash
 $ npm install -g parallel
 ```
+[![NPM](https://nodei.co/npm/parallel.png?mini=true)](https://www.npmjs.com/package/parallel)
 
 # Usage
 
