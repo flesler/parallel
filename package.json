@@ -2,7 +2,7 @@
   "name": "parallel",
   "author": "Ariel Flesler <aflesler@gmail.com>",
   "version": "1.0.4",
-  "description": "Execute shell command lines from standard input in parallel",
+  "description": "CLI tool to execute shell commands in parallel, based on GNU parallel command",
   "keywords": ["parallel", "cli", "concurrent", "commands", "gnu", "execute", "standard", "input", "stdin"],
   "license": "MIT",
   "homepage": "https://github.com/flesler/parallel",
