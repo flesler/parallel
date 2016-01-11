@@ -1,7 +1,7 @@
 parallel
 =======
 
-Execute shell command lines from standard input in parallel.
+CLI tool to execute shell commands in parallel.
 
 Loosely based on [GNU parallel command](https://www.gnu.org/software/parallel/man.html).
 
