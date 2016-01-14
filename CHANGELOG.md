@@ -1,3 +1,7 @@
+# 1.0.5
+- Implemented positional placeholders to split input line in columns
+- Fixed {/.} would yield empty string when line had no dot after the last slash
+
 # 1.0.4
 - Added support for `--timeout <sec>` option, kill jobs with SIGTERM if they take too long
 

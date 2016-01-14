@@ -31,7 +31,8 @@ input | parallel [options] --pipe cmd [cmd-options] > output
 -d, --delimiter <delim> Input items are terminated by delim [default \n]
 -0, --null              Use NUL as delimiter, alias for -d $'\\0'
 -q, --quote             Quote each input line in case they contain special caracters
--t, --trim              Trims the input of leading and trailing spaces and tabs [default false]
+-t, --trim              Trims the input of leading and trailing spaces and tabs
+-C, --colsep <regex>    Column separator for positional placeholders [default " "]
 -a, --arg-file <file>   Use file as input source instead of stdin
 -p, --pipe              Spread input lines to jobs via their stdin
 --bg                    Run commands in background and exit
@@ -39,8 +40,8 @@ input | parallel [options] --pipe cmd [cmd-options] > output
 --timeout <secs>        If the command runs longer than secs it gets killed with SIGTERM [default 0]
 -v, --verbose           Output timing information to stderr
 -s, --shell             Wrap command with shell (supports escaped pipes, redirection, etc.) [experimental]
---help              Print this message and exit
---version           Print the comand version and exit
+--help                  Print this message and exit
+--version               Print the comand version and exit
 ```
 
 # Arguments placeholders
@@ -50,13 +51,14 @@ If no placeholder is found, input lines will be appended to the end as last argu
 Everything around each placeholder will be repeated for each line. Use quotes to include spaces.
 
 ```
-{}   the input line
-{.}  the input line without extension
-{/}  the basename of the input line
-{//} the dirname of the input line
-{/.} the basename of the input line without extension
-{#}  the sequence number of the job to run, [1, ]
-{%}  the job slot number [1, --jobs]
+{}   input line
+{.}  input line without extension
+{/}  basename of the input line
+{//} dirname of the input line
+{/.} basename of the input line without extension
+{n}  nth input column, followed by any operator above (f.e {2/.})
+{#}  sequence number of the job to run [1,]
+{%}  job slot number [1, --jobs]
 ```
 
 # Examples
@@ -68,6 +70,10 @@ cat data.txt | parallel -p grep pattern > out.txt
 ```bash
 # Use all CPUs to gunzip and concat files to a single file, 10 per process at a time
 find . -name "*.gz" -print0 | parallel -0n 10 gzip -dc {} > out.txt
+```
+```bash
+# Download 10 images at a time, use the URL basename as file name
+cat urls.txt | parallel -j 10 curl {} -o images/{/}
 ```
 ```bash
 # Generate 100 URLs and download them with `curl` (uses experimental --shell option)
@@ -82,8 +88,12 @@ find . -name '*.txt' | parallel mv {} {.}.log
 find . -type f | parallel mkdir -p {//}/sub && mv {} {//}/sub/{/}
 ```
 ```bash
-# Showcase all placeholders
+# Showcase non-positional placeholders
 find . -type f | parallel echo "file={} noext={.} base={/} base_noext={/.} dir={//} jobid={#} jobslot={%}"
+```
+```bash
+# Showcase positional placeholders
+echo A~B.ext~C~D | parallel -C '~' echo {4}+{3}+{2.}+{1}
 ```
 
 # Differences with [GNU parallel](https://www.gnu.org/software/parallel/man.html)
@@ -106,6 +116,7 @@ find . -type f | parallel echo "file={} noext={.} base={/} base_noext={/.} dir={
 - Show help when nothing is piped in, `process.stdin.isTTY` not working as expected
 - Maybe avoid pre-spawning jobs when piping. Spawn on demand when overwhelmed, support `--delay` there too
 - Support `--jobs=0` for unlimited. Easy except when piping or when `--max-args=0`
+- Should default behavior of -n 0 only happen if -m or -xargs, like on GNU?
 
 # License
 
