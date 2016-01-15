@@ -38,6 +38,7 @@ input | parallel [options] --pipe cmd [cmd-options] > output
 --bg                    Run commands in background and exit
 --delay <secs>          Wait before starting new jobs, secs can be less than 1 [default 0]
 --timeout <secs>        If the command runs longer than secs it gets killed with SIGTERM [default 0]
+--dry-run               Print commands to run without running them, incompatible with --pipe
 -v, --verbose           Output timing information to stderr
 -s, --shell             Wrap command with shell (supports escaped pipes, redirection, etc.) [experimental]
 --help                  Print this message and exit
@@ -117,6 +118,7 @@ echo A~B.ext~C~D | parallel -C '~' echo {4}+{3}+{2.}+{1}
 - Maybe avoid pre-spawning jobs when piping. Spawn on demand when overwhelmed, support `--delay` there too
 - Support `--jobs=0` for unlimited. Easy except when piping or when `--max-args=0`
 - Should default behavior of -n 0 only happen if -m or -xargs, like on GNU?
+- Clean up `jobs` module, maybe create a `job` module with some of its logic
 
 # License
 

@@ -1,3 +1,7 @@
+# 1.0.6
+- Fixed ps.writable wasn't being restored when stdin is drained, would hang all until all input has been loaded
+- Added support for `--dry-run` option, resulting commands are printed to stdout within runnning. Incompatible with `--pipe`
+
 # 1.0.5
 - Implemented positional placeholders to split input line in columns
 - Fixed {/.} would yield empty string when line had no dot after the last slash
