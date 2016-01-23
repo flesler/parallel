@@ -7,11 +7,10 @@ Loosely based on [GNU parallel command](https://www.gnu.org/software/parallel/ma
 
 # Installation
 
-Using npm:
+Using [npm](https://www.npmjs.com/package/parallel):
 ```bash
 $ npm install -g parallel
 ```
-[![NPM](https://nodei.co/npm/parallel.png?mini=true)](https://www.npmjs.com/package/parallel)
 
 # Usage
 
