@@ -99,11 +99,11 @@ echo A~B.ext~C~D | parallel -C '~' echo {4}+{3}+{2.}+{1}
 # Command-line options
 Once a command-line parameter that is not an option is found, then the "command" starts.
 parallel supports command-line options in all these formats (all equivalent):
-- `--trim --jobs 2´
-- `--trim --jobs=2´
-- `-t -j 2´
-- `-tj 2´
-- `-tj2´
+- `--trim --jobs 2`
+- `--trim --jobs=2`
+- `-t -j 2`
+- `-tj 2`
+- `-tj2`
 
 # Differences with [GNU parallel](https://www.gnu.org/software/parallel/man.html)
 - Added aliases to some options: `-p` -> `--pipe`, `-D` -> `--dry-run`
