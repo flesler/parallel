@@ -110,15 +110,16 @@ echo A~B.ext~C~D | parallel -C '~' echo {4}+{3}+{2.}+{1}
 # ToDo
 - Support more options from [GNU parallel](https://www.gnu.org/software/parallel/man.html)
 - Support more [placeholders](https://www.gnu.org/software/parallel/man.html#OPTIONS)
-- Maybe support `:::` and `::::`, seems pointless
-- Support multiple `-a`, can be achieved with `cat a b c` though
 - Implement backpressure to pause input if output is overwhelmed
-- Change option parser to support this format: `-j2` ?
 - Show help when nothing is piped in, `process.stdin.isTTY` not working as expected
-- Maybe avoid pre-spawning jobs when piping. Spawn on demand when overwhelmed, support `--delay` there too
 - Support `--jobs=0` for unlimited. Easy except when piping or when `--max-args=0`
 - Should default behavior of -n 0 only happen if -m or -xargs, like on GNU?
+- Use [node-shell-quote](https://github.com/substack/node-shell-quote) for `--dry-run` and `--shell`?
 - Clean up `jobs` module, maybe create a `job` module with some of its logic
+- Maybe support `:::` and `::::`, seems pointless
+- Change option parser to support this format: `-j2` ?
+- Maybe avoid pre-spawning jobs when piping. Spawn on demand when overwhelmed, support `--delay` there too
+- Support multiple `-a`? can be achieved with `cat a b c` though, maybe it's pointless
 
 # License
 
