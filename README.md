@@ -30,7 +30,7 @@ input | parallel [options] --pipe cmd [cmd-options] > output
 -d, --delimiter <delim> Input items are terminated by delim [default \n]
 -0, --null              Use NUL as delimiter, alias for -d $'\\0'
 -q, --quote             Quote each input line in case they contain special caracters
--t, --trim              Trims the input of leading and trailing spaces and tabs
+-t, --trim              Removes spaces, tabs and new lines around the input lines
 -C, --colsep <regex>    Column separator for positional placeholders [default " "]
 -a, --arg-file <file>   Use file as input source instead of stdin
 -p, --pipe              Spread input lines to jobs via their stdin
