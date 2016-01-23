@@ -1,3 +1,8 @@
+# 1.0.7
+- Command-line options now support `--key=value` format in addition to `--key value`
+- Command-line options now support `-j2` format in addition to `-j 2`
+- Added `-D` as alias for `--dry-run`. GNU's parallel doesn't have any and I think it's a useful option and deserves one.
+
 # 1.0.6
 - Fixed ps.writable wasn't being restored when stdin is drained, would hang all until all input has been loaded
 - Added support for `--dry-run` option, resulting commands are printed to stdout within runnning. Incompatible with `--pipe`
