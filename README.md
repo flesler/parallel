@@ -63,8 +63,11 @@ Everything around each placeholder will be repeated for each input line. Use quo
 
 # Input from command-line arguments
 
-Input lines can be provided as command-line arguments. Prepend each line with `:::`. These lines have precedence over any input piped in.
-Check example (7) to see this in action.
+Input can be provided as command-line arguments preceeded by a `:::`.
+Each argument will be considered a separate input line.
+If you include several `:::`, parallel will use all the permutations between them as input lines.
+While GNU´s version also permutates stdin and input files, this version won't.
+Check examples (6) and (7) to see this in action.
 
 # Examples
 
@@ -82,19 +85,19 @@ cat urls.txt | parallel -j10 curl {} -o images/{/}
 ```
 ```bash
 # (4) Generate 100 URLs and download them with `curl` (uses experimental --shell option)
-echo {001..100} | parallel -ts -d" " curl http://xyz.com/image_{}.png \> image_{}.png
+seq 100 | parallel -s curl http://xyz.com/image_{}.png \> image_{}.png
 ```
 ```bash
-# (5) Rename extension from all txt to log
-find . -name '*.txt' | parallel mv {} {.}.log
-```
-```bash
-# (6) Move each file to a subdir relative to their current dir
+# (5) Move each file to a subdir relative to their current dir
 find . -type f | parallel mkdir -p {//}/sub && mv {} {//}/sub/{/}
 ```
 ```bash
-# (7) Show how to provide input as command-line arguments and what the order is
-echo 6 7 | parallel -d' ' -j1 echo ::: 1 2 ::: 3 4 5
+# (6) Show how to provide input as command-line arguments and what the order is
+echo 4 | parallel -j1 echo ::: 1 2 3
+```
+```bash
+# (7) Rename extension from all txt to log
+parallel mv {} {.}.log ::: *.txt
 ```
 ```bash
 # (8) Showcase non-positional placeholders
@@ -118,6 +121,7 @@ parallel supports command-line options in all these formats (all equivalent):
 - Added aliases to some options: `-p` -> `--pipe`, `-D` -> `--dry-run`
 - `--round-robin` is implicit when `--pipe` is used
 - This module does support piped input and `:::` arguments together unlike GNU's
+- This module won't permutate input from `:::` and from stdin or `--arg-file`
 - GNU's `-m` can be achieved here with `--max-args=0` to distribute all input lines evenly among `--jobs`
 - `--shell` was added to allow pipes, redirection, etc
 - `--trim` doesn't support `<n|l|r|lr|rl>`, it trims all spaces, tabs and newlines from both sides

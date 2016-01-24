@@ -1,4 +1,6 @@
-# 1.0.10 (Unreleased)
+# 1.0.10
+- Each argument after a `:::` is now a separate line
+- Including several `:::` permutates the arguments instead of just concatenating them
 - `--verbose` also logs complete command line contents for each job that starts
 
 # 1.0.9
