@@ -1,3 +1,6 @@
+# 1.0.10 (Unreleased)
+- `--verbose` also logs complete command line contents for each job that starts
+
 # 1.0.9
 - Workaround from 1.0.8 didn't work once process is run as bin, implemented another solution based on a timeout
 

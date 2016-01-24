@@ -127,7 +127,6 @@ parallel supports command-line options in all these formats (all equivalent):
 
 # ToDo
 - Implement backpressure to pause input if output is overwhelmed
-- Show help when nothing is piped in, `process.stdin.isTTY` not working as expected
 - Support `--header` for working with CSV-like files
 - Use [node-shell-quote](https://github.com/substack/node-shell-quote) for `--dry-run` and `--shell`?
 - Clean up `jobs` module, maybe create a `job` module with some of its logic
