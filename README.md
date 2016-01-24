@@ -132,6 +132,8 @@ parallel supports command-line options in all these formats (all equivalent):
 # ToDo
 - Implement backpressure to pause input if output is overwhelmed
 - Support `--header` for working with CSV-like files
+- Should it permutate lines from stdin and `--arg-file` ?
+- Could implement `--keep-order`
 - Use [node-shell-quote](https://github.com/substack/node-shell-quote) for `--dry-run` and `--shell`?
 - Clean up `jobs` module, maybe create a `job` module with some of its logic
 - Maybe avoid pre-spawning jobs when piping. Spawn on demand when overwhelmed, support `--delay` there too

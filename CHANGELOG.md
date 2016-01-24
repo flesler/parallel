@@ -1,3 +1,6 @@
+# 1.0.11 (Unreleased)
+- Fixed {%} was NaN when `--jobs=0`
+
 # 1.0.10
 - Each argument after a `:::` is now a separate line
 - Including several `:::` permutates the arguments instead of just concatenating them
