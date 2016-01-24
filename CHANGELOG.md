@@ -1,3 +1,8 @@
+# 1.0.8
+- `--jobs=0` is now supported for an unlimited amount of parallel jobs
+- Invalid options combinations are now validated and explicitely reported
+- Added support for input being passed on command-line arguments using the `:::` operator
+
 # 1.0.7
 - Command-line options now support `--key=value` format in addition to `--key value`
 - Command-line options now support `-j2` format in addition to `-j 2`

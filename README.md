@@ -25,7 +25,7 @@ input | parallel [options] --pipe cmd [cmd-options] > output
 # Options
 
 ```bash
--j, --jobs <n>          Number of processes to spawn [default CPUs]
+-j, --jobs <n>          Max processes to run in parallel (0 for ∞) [default CPUs]
 -n, --max-args <args>   Number of input lines per command line [default 1]
 -d, --delimiter <delim> Input items are terminated by delim [default \n]
 -0, --null              Use NUL as delimiter, alias for -d $'\\0'
@@ -34,7 +34,7 @@ input | parallel [options] --pipe cmd [cmd-options] > output
 -C, --colsep <regex>    Column separator for positional placeholders [default " "]
 -a, --arg-file <file>   Use file as input source instead of stdin
 -p, --pipe              Spread input lines to jobs via their stdin
--D, --dry-run           Print commands to run without running them, incompatible with --pipe
+-D, --dry-run           Print commands to run without running them
 --bg                    Run commands in background and exit
 --delay <secs>          Wait before starting new jobs, secs can be less than 1 [default 0]
 --timeout <secs>        If the command runs longer than secs it gets killed with SIGTERM [default 0]
@@ -61,38 +61,47 @@ Everything around each placeholder will be repeated for each input line. Use quo
 {%}  job slot number [1, --jobs]
 ```
 
+# Input from command-line arguments
+
+Input lines can be provided as command-line arguments. Prepend each line with `:::`. These lines have precedence over any input piped in.
+Check example (7) to see this in action.
+
 # Examples
 
 ```bash
-# Use all CPUs to grep a file
+# (1) Use all CPUs to grep a file
 cat data.txt | parallel -p grep pattern > out.txt
 ```
 ```bash
-# Use all CPUs to gunzip and concat files to a single file, 10 per process at a time
+# (2) Use all CPUs to gunzip and concat files to a single file, 10 per process at a time
 find . -name '*.gz' | parallel -n10 gzip -dc {} > out.txt
 ```
 ```bash
-# Download files from a list, 10 at a time with all CPUs, use the URL basename as file name
+# (3) Download files from a list, 10 at a time with all CPUs, use the URL basename as file name
 cat urls.txt | parallel -j10 curl {} -o images/{/}
 ```
 ```bash
-# Generate 100 URLs and download them with `curl` (uses experimental --shell option)
+# (4) Generate 100 URLs and download them with `curl` (uses experimental --shell option)
 echo {001..100} | parallel -ts -d" " curl http://xyz.com/image_{}.png \> image_{}.png
 ```
 ```bash
-# Rename extension from all txt to log
+# (5) Rename extension from all txt to log
 find . -name '*.txt' | parallel mv {} {.}.log
 ```
 ```bash
-# Move each file to a subdir relative to their current dir
+# (6) Move each file to a subdir relative to their current dir
 find . -type f | parallel mkdir -p {//}/sub && mv {} {//}/sub/{/}
 ```
 ```bash
-# Showcase non-positional placeholders
+# (7) Show how to provide input as command-line arguments and what the order is
+echo 6 7 | parallel -d' ' -j1 echo ::: 1 2 ::: 3 4 5
+```
+```bash
+# (8) Showcase non-positional placeholders
 find . -type f | parallel echo "file={} noext={.} base={/} base_noext={/.} dir={//} jobid={#} jobslot={%}"
 ```
 ```bash
-# Showcase positional placeholders
+# (9) Showcase positional placeholders
 echo A~B.ext~C~D | parallel -C '~' echo {4}+{3}+{2.}+{1}
 ```
 
@@ -108,24 +117,20 @@ parallel supports command-line options in all these formats (all equivalent):
 # Differences with [GNU parallel](https://www.gnu.org/software/parallel/man.html)
 - Added aliases to some options: `-p` -> `--pipe`, `-D` -> `--dry-run`
 - `--round-robin` is implicit when `--pipe` is used
-- `--max-args=0` here means distribute all input lines evenly among `--jobs`
+- This module does support piped input and `:::` arguments together unlike GNU's
+- GNU's `-m` can be achieved here with `--max-args=0` to distribute all input lines evenly among `--jobs`
 - `--shell` was added to allow pipes, redirection, etc
 - `--trim` doesn't support `<n|l|r|lr|rl>`, it trims all spaces, tabs and newlines from both sides
 - A ton of missing options that I consider less useful
-- Some placeholders aren't supported
+- `--plus` placeholders are not supported
 - Many more
 
 # ToDo
-- Support more options from [GNU parallel](https://www.gnu.org/software/parallel/man.html)
-- Support more [placeholders](https://www.gnu.org/software/parallel/man.html#OPTIONS)
 - Implement backpressure to pause input if output is overwhelmed
 - Show help when nothing is piped in, `process.stdin.isTTY` not working as expected
-- Support `--header` working with CSV-like files
-- Support `--jobs=0` for unlimited. Easy except when piping or when `--max-args=0`
-- Should default behavior of -n 0 only happen if -m or -xargs, like on GNU?
+- Support `--header` for working with CSV-like files
 - Use [node-shell-quote](https://github.com/substack/node-shell-quote) for `--dry-run` and `--shell`?
 - Clean up `jobs` module, maybe create a `job` module with some of its logic
-- Maybe support `:::` and `::::`, seems pointless
 - Maybe avoid pre-spawning jobs when piping. Spawn on demand when overwhelmed, support `--delay` there too
 - Support multiple `-a`? can be achieved with `cat a b c` though, maybe it's pointless
 
