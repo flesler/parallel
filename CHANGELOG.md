@@ -1,5 +1,6 @@
-# 1.0.11 (Unreleased)
+# 1.1.0 (Unreleased)
 - Fixed {%} was NaN when `--jobs=0`
+- Improved some cryptic variable names
 
 # 1.0.10
 - Each argument after a `:::` is now a separate line
@@ -22,7 +23,7 @@
 - Added `-D` as alias for `--dry-run`. GNU's parallel doesn't have any and I think it's a useful option and deserves one.
 
 # 1.0.6
-- Fixed ps.writable wasn't being restored when stdin is drained, would hang all until all input has been loaded
+- Fixed job.writable wasn't being restored when stdin is drained, would hang all until all input has been loaded
 - Added support for `--dry-run` option, resulting commands are printed to stdout within runnning. Incompatible with `--pipe`
 
 # 1.0.5
