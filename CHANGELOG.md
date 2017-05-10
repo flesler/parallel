@@ -1,3 +1,7 @@
+# 1.2.0
+- Added support for `--halt-on-error` option, if any job exits with non-zero code. Parallel will exit immediately
+- Parallel exit code now reflects the amount of failed jobs up to 101
+
 # 1.1.1
 - Fixed {%} was NaN when `--jobs=0`
 - Changed the workaround to handle stdin not being piped in

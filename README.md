@@ -38,6 +38,7 @@ input | parallel [options] --pipe cmd [cmd-options] > output
 --bg                    Run commands in background and exit
 --delay <secs>          Wait before starting new jobs, secs can be less than 1 [default 0]
 --timeout <secs>        If the command runs longer than secs it gets killed with SIGTERM [default 0]
+--halt-on-error         Kill all jobs and exit if any job exits with a code other than 0 [default false]
 -v, --verbose           Output timing information to stderr
 -s, --shell             Wrap command with shell (supports escaped pipes, redirection, etc.) [experimental]
 --help                  Print this message and exit
@@ -117,6 +118,9 @@ parallel supports command-line options in all these formats (all equivalent):
 - `-tj 2`
 - `-tj2`
 
+# Exit code
+Just like [GNU parallel](https://www.gnu.org/software/parallel/man.html#EXIT-STATUS) does, the exit code will be the amount of jobs that failed (up to 101). It means that if any job fails, "global" exit code will be non-zero as well. You can add `--halt-on-error` to abort as soon as one job fails.
+
 # Differences with [GNU parallel](https://www.gnu.org/software/parallel/man.html)
 - Added aliases to some options: `-p` -> `--pipe`, `-D` -> `--dry-run`
 - `--round-robin` is implicit when `--pipe` is used
@@ -125,6 +129,7 @@ parallel supports command-line options in all these formats (all equivalent):
 - GNU's `-m` can be achieved here with `--max-args=0` to distribute all input lines evenly among `--jobs`
 - `--shell` was added to allow pipes, redirection, etc
 - `--trim` doesn't support `<n|l|r|lr|rl>`, it trims all spaces, tabs and newlines from both sides
+- `--halt-on-error` doesn't support any option, it exits as soon as one job fails
 - A ton of missing options that I consider less useful
 - `--plus` placeholders are not supported
 - Many more
