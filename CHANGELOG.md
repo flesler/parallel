@@ -1,5 +1,6 @@
-# 1.1.0 (Unreleased)
+# 1.1.1
 - Fixed {%} was NaN when `--jobs=0`
+- Changed the workaround to handle stdin not being piped in
 - Improved some cryptic variable names
 
 # 1.0.10

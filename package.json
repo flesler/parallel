@@ -1,7 +1,7 @@
 {
   "name": "parallel",
   "author": "Ariel Flesler <aflesler@gmail.com>",
-  "version": "1.1.0-dev",
+  "version": "1.1.1",
   "description": "CLI tool to execute shell commands in parallel, based on GNU parallel command",
   "keywords": ["parallel", "cli", "concurrent", "commands", "gnu", "execute", "standard", "input", "stdin"],
   "license": "MIT",
@@ -14,11 +14,7 @@
     "parallel": "./bin/parallel.js"
   },
   "scripts": {
-    "test": "echo TODO: Tests",
-
-    "preversion": "npm test",
-    "version": "git add -A",
-    "postversion": "git push && git push --tags && npm publish"
+    "test": "echo TODO: Tests"
   },
   "engines": {
     "node": "*"
