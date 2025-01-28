@@ -115,7 +115,7 @@ parallel mv {} {.}.log ::: *.txt
 ```
 ```bash
 # (8) Showcase non-positional placeholders
-find . -type f | parallel echo "file={} noext={.} base={/} base_noext={/.} dir={//} jobid={#} jobslot={%} time={t} timeiso={T} date={d} random={r} md5={md5}"
+find . -type f | parallel echo "file={} noext={.} base={/} base_noext={/.} dir={//} jobid={#} jobslot={%} ext={..} lower={v} upper={^} time={t} timeiso={T} date={d} random={r} md5={md5}"
 ```
 ```bash
 # (9) Showcase positional placeholders
