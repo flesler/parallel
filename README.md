@@ -115,7 +115,7 @@ parallel mv {} {.}.log ::: *.txt
 ```
 ```bash
 # (8) Showcase non-positional placeholders
-find . -type f | parallel echo "file={} noext={.} base={/} base_noext={/.} dir={//} jobid={#} jobslot={%} time={t} timeiso={T} date={d} random={r} md5={md5}"
+find . -type f | parallel echo "file={} noext={.} base={/} base_noext={/.} dir={//} jobid={#} jobslot={%} ext={..} lower={v} upper={^} time={t} timeiso={T} date={d} random={r} md5={md5}"
 ```
 ```bash
 # (9) Showcase positional placeholders
@@ -145,6 +145,7 @@ Just like [GNU parallel](https://www.gnu.org/software/parallel/man.html#EXIT-STA
 - `--halt-on-error` doesn't support any option, it exits as soon as one job fails
 - A ton of missing options that I consider less useful
 - `--plus` placeholders are not supported
+- But this supports various placeholders that GNU's parallel doesn't (see above)
 - Many more
 
 # ToDo
@@ -156,6 +157,7 @@ Just like [GNU parallel](https://www.gnu.org/software/parallel/man.html#EXIT-STA
 - Clean up `jobs` module, maybe create a `job` module with some of its logic
 - Maybe avoid pre-spawning jobs when piping. Spawn on demand when overwhelmed, support `--delay` there too
 - Support multiple `-a`? can be achieved with `cat a b c` though, maybe it's pointless
+- Allow placeholders to be chained as such: `{..|v|md5}` (get the extension, then lowercase, then md5)
 
 # License
 

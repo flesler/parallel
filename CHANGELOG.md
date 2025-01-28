@@ -1,3 +1,6 @@
+# 1.3.0
+- Add various new useful placeholders, that are not in the GNU version
+
 # 1.2.0
 - Added support for `--halt-on-error` option, if any job exits with non-zero code. Parallel will exit immediately
 - Parallel exit code now reflects the amount of failed jobs up to 101
