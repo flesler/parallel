@@ -62,6 +62,19 @@ Everything around each placeholder will be repeated for each input line. Use quo
 {%}  job slot number [1, --jobs]
 ```
 
+These are not in the original GNU parallel, but were implemented here:
+
+```
+{..} extension of the input line
+{v} lower case the value
+{^} upper case the value
+{t} current time as a number
+{T} current time in ISO as a string
+{d} current date in ISO format
+{r} random number between 100000 and 999999
+{md5} MD5 hash of the input line
+```
+
 # Input from command-line arguments
 
 Input can be provided as command-line arguments preceeded by a `:::`.
@@ -102,7 +115,7 @@ parallel mv {} {.}.log ::: *.txt
 ```
 ```bash
 # (8) Showcase non-positional placeholders
-find . -type f | parallel echo "file={} noext={.} base={/} base_noext={/.} dir={//} jobid={#} jobslot={%}"
+find . -type f | parallel echo "file={} noext={.} base={/} base_noext={/.} dir={//} jobid={#} jobslot={%} time={t} timeiso={T} date={d} random={r} md5={md5}"
 ```
 ```bash
 # (9) Showcase positional placeholders
