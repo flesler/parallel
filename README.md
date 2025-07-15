@@ -65,9 +65,11 @@ Everything around each placeholder will be repeated for each input line. Use quo
 These are not in the original GNU parallel, but were implemented here:
 
 ```
-{..} extension of the input line
-{...} input line without two extensions (e.g., file.tar.gz → file)
-{/...} basename without two extensions (e.g., path/file.tar.gz → file)
+{..} input line without two extensions (e.g., file.tar.gz → file)
+{...} input line without three extensions (e.g., file.tar.gz.backup → file)
+{/..} basename without two extensions (e.g., path/file.tar.gz → file)
+{/...} basename without three extensions (e.g., path/file.tar.gz.backup → file)
+{ext} extension of the input line
 {v} lower case the value
 {^} upper case the value
 {t} current time as a number
@@ -117,7 +119,7 @@ parallel mv {} {.}.log ::: *.txt
 ```
 ```bash
 # (8) Showcase non-positional placeholders
-find . -type f | parallel echo "file={} noext={.} base={/} base_noext={/.} dir={//} jobid={#} jobslot={%} ext={..} noext2={...} base_noext2={/...} lower={v} upper={^} time={t} timeiso={T} date={d} random={r} md5={md5}"
+find . -type f | parallel echo "file={} noext={.} base={/} base_noext={/.} dir={//} jobid={#} jobslot={%} ext={ext} noext2={..} noext3={...} base_noext2={/..} base_noext3={/...} lower={v} upper={^} time={t} timeiso={T} date={d} random={r} md5={md5}"
 ```
 ```bash
 # (9) Showcase positional placeholders
