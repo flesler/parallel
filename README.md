@@ -66,6 +66,8 @@ These are not in the original GNU parallel, but were implemented here:
 
 ```
 {..} extension of the input line
+{...} input line without two extensions (e.g., file.tar.gz → file)
+{/...} basename without two extensions (e.g., path/file.tar.gz → file)
 {v} lower case the value
 {^} upper case the value
 {t} current time as a number
@@ -115,7 +117,7 @@ parallel mv {} {.}.log ::: *.txt
 ```
 ```bash
 # (8) Showcase non-positional placeholders
-find . -type f | parallel echo "file={} noext={.} base={/} base_noext={/.} dir={//} jobid={#} jobslot={%} ext={..} lower={v} upper={^} time={t} timeiso={T} date={d} random={r} md5={md5}"
+find . -type f | parallel echo "file={} noext={.} base={/} base_noext={/.} dir={//} jobid={#} jobslot={%} ext={..} noext2={...} base_noext2={/...} lower={v} upper={^} time={t} timeiso={T} date={d} random={r} md5={md5}"
 ```
 ```bash
 # (9) Showcase positional placeholders
