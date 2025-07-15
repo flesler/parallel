@@ -78,6 +78,7 @@ These are not in the original GNU parallel, but were implemented here:
 {r} random number between 100000 and 999999
 {md5} MD5 hash of the input line
 {len} length of the input line in characters
+{wc} word count of the input line
 ```
 
 # Input from command-line arguments
@@ -120,7 +121,7 @@ parallel mv {} {.}.log ::: *.txt
 ```
 ```bash
 # (8) Showcase non-positional placeholders
-find . -type f | parallel echo "file={} noext={.} base={/} base_noext={/.} dir={//} jobid={#} jobslot={%} ext={ext} noext2={..} noext3={...} base_noext2={/..} base_noext3={/...} lower={v} upper={^} time={t} timeiso={T} date={d} random={r} md5={md5} len={len}"
+find . -type f | parallel echo "file={} noext={.} base={/} base_noext={/.} dir={//} jobid={#} jobslot={%} ext={ext} noext2={..} noext3={...} base_noext2={/..} base_noext3={/...} lower={v} upper={^} time={t} timeiso={T} date={d} random={r} md5={md5} len={len} wc={wc}"
 ```
 ```bash
 # (9) Showcase positional placeholders
