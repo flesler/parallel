@@ -35,6 +35,7 @@ input | parallel [options] --pipe cmd [cmd-options] > output
 -a, --arg-file <file>   Use file as input source instead of stdin
 -p, --pipe              Spread input lines to jobs via their stdin
 -D, --dry-run           Print commands to run without running them
+--tag                   Prefix each line of output with the argument that generated it
 --bg                    Run commands in background and exit
 --delay <secs>          Wait before starting new jobs, secs can be less than 1 [default 0]
 --timeout <secs>        If the command runs longer than secs it gets killed with SIGTERM [default 0]
