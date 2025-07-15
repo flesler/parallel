@@ -36,6 +36,8 @@ input | parallel [options] --pipe cmd [cmd-options] > output
 -p, --pipe              Spread input lines to jobs via their stdin
 -D, --dry-run           Print commands to run without running them
 --tag                   Prefix each line of output with the argument that generated it
+--joblog <file>         Log job details (start time, runtime, exit code, command) to file
+--shuf                  Randomize the order of jobs
 --bg                    Run commands in background and exit
 --delay <secs>          Wait before starting new jobs, secs can be less than 1 [default 0]
 --timeout <secs>        If the command runs longer than secs it gets killed with SIGTERM [default 0]
@@ -127,6 +129,18 @@ find . -type f | parallel echo "file={} noext={.} base={/} base_noext={/.} dir={
 ```bash
 # (9) Showcase positional placeholders
 echo A~B.ext~C~D | parallel -C '~' echo {4}+{3}+{2.}+{1}
+```
+```bash
+# (10) Log job details for monitoring and debugging
+find . -name '*.log' | parallel --joblog process.log gzip {}
+```
+```bash
+# (11) Tag output lines to identify which job produced them
+echo -e "server1\nserver2\nserver3" | parallel --tag ping -c 1 {}
+```
+```bash
+# (12) Process files in random order
+find . -name '*.txt' | parallel --shuf wc -l {}
 ```
 
 # Command-line options
