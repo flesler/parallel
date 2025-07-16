@@ -15,19 +15,21 @@ $ npm install -g parallel
 # Usage
 
 ```bash
-# Pass input lines as command-line arguments
-input | parallel [options] cmd [cmd-options] {} > output
-# Pipe input lines through the jobs stdin
-input | parallel [options] --pipe cmd [cmd-options] > output
+
+parallel [options] [command [arguments]] < list_of_arguments
+parallel [options] [command [arguments]] (::: arguments)...
+cat ... | parallel --pipe [options] [command [arguments]]
 ```
 # Options
 
 ```bash
 -j, --jobs <n>          Max processes to run in parallel (0 for ∞) [default 20]
 -n, --max-args <args>   Number of input lines per command line [default 1]
+-X, --xargs             Multiple arguments with context replace
 -d, --delimiter <delim> Input items are terminated by delim [default \n]
 -0, --null              Use NUL as delimiter
 -q, --quote             Quote each input line in case they contain special caracters
+--quote-all             Quote each input line in case they contain special caracters (alias for --quote)
 -t, --trim              Removes spaces, tabs and new lines around the input lines
 -C, --colsep <regex>    Column separator for positional placeholders [default " "]
 -a, --arg-file <file>   Use file as input source instead of stdin
@@ -35,12 +37,13 @@ input | parallel [options] --pipe cmd [cmd-options] > output
 -D, --dry-run           Print commands to run without running them
 --tag                   Prefix each line of output with the argument that generated it
 --shuf                  Randomize the order of jobs
+-k, --keep-order        Keep same order as input
 --joblog <file>         Log job details (start time, runtime, exit code, command) to file
 --bg                    Run commands in background and exit
 --delay <secs>          Wait before starting new jobs, secs can be less than 1 [default 0]
 --timeout <secs>        If the command runs for longer than secs it will get killed with SIGTERM [default 0]
 --halt-on-error         Kill all jobs and exit if any job exits with a code other than 0 [default false]
--v, --verbose           Output timing information to stderr
+-v, --verbose           Print job commands and timing information to stderr
 -s, --shell             Wrap command with shell (supports escaped pipes, redirection, etc.) [experimental]
 --help                  Print this message and exit
 --version               Print the comand version and exit
