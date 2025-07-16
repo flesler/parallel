@@ -23,7 +23,7 @@ cat ... | parallel --pipe [options] [command [arguments]]
 # Options
 
 ```bash
--j, --jobs <n>          Max processes to run in parallel (0 for ∞) [default 20]
+-j, --jobs <n>          Max processes to run in parallel (0 for ∞) [default CPUs]
 -n, --max-args <args>   Number of input lines per command line [default 1]
 -X, --xargs             Multiple arguments with context replace
 -d, --delimiter <delim> Input items are terminated by delim [default \n]
@@ -42,9 +42,9 @@ cat ... | parallel --pipe [options] [command [arguments]]
 -k, --keep-order        Keep same order as input
 --joblog <file>         Log job details (start time, runtime, exit code, command) to file
 --bg                    Run commands in background and exit
---delay <secs>          Wait before starting new jobs, secs can be less than 1 [default 0]
---timeout <secs>        If the command runs for longer than secs it will get killed with SIGTERM [default 0]
---halt-on-error         Kill all jobs and exit if any job exits with a code other than 0 [default false]
+--delay <secs>          Wait before starting new jobs, secs can be less than 1
+--timeout <secs>        If the command runs for longer than secs it will get killed with SIGTERM
+--halt-on-error         Kill all jobs and exit if any job exits with a code other than 0
 -v, --verbose           Print job commands and timing information to stderr
 -s, --shell             Wrap command with shell (supports escaped pipes, redirection, etc.) [experimental]
 --help                  Print this message and exit
