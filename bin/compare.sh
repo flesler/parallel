@@ -1,5 +1,7 @@
 #!/bin/bash
 
+parallel_path=parallel-gnu
+
 # Capture stdin to a temporary file if it's being piped
 if [ ! -t 0 ]; then
     input_file=$(mktemp)
@@ -11,11 +13,10 @@ echo "=================================================="
 echo "GNU PARALLEL OUTPUT:"
 echo "=================================================="
 if [ -n "$input_file" ]; then
-    parallel "$@" < "$input_file"
+    $parallel_path "$@" < "$input_file"
 else
-    parallel "$@"
+    $parallel_path "$@"
 fi
-gnu_exit=$?
 
 echo ""
 echo "=================================================="
@@ -26,12 +27,6 @@ if [ -n "$input_file" ]; then
 else
     node bin/parallel.js "$@"
 fi
-our_exit=$?
-
-echo ""
-echo "=================================================="
-echo "EXIT CODES: GNU=$gnu_exit, OURS=$our_exit"
-echo "=================================================="
 
 # Clean up temporary file
 if [ -n "$input_file" ]; then
