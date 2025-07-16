@@ -81,6 +81,7 @@ cat ... | parallel --pipe [options] [command [arguments]]
 
 ```bash
 {ext}  the extension of the input line
+{trim} the input line with leading/trailing whitespace removed
 {v}    lower case the value
 {^}    upper case the value
 {t}    current time as a number
