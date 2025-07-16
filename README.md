@@ -69,7 +69,7 @@ cat ... | parallel --pipe [options] [command [arguments]]
 {#}    the sequence number of the job to run, [1,]
 {%}    the job slot number [1, --jobs]
 {..}   the input line without two extensions (e.g., file.tar.gz → file)
-{...}  the input line without three extensions (e.g., file.tar.gz.backup → file)
+{...}  the input line without up to three extensions (e.g., file.tar.gz.backup → file)
 {/..}  the basename without two extensions (e.g., path/file.tar.gz → file)
 {/...} the basename without three extensions (e.g., path/file.tar.gz.backup → file)
 {+/}   the number of "/" in the input line
@@ -136,8 +136,8 @@ echo -e "/home/user/document.pdf\n/tmp/archive.tar.gz" | \
 
 ```bash
 # (5) Multi-extension removal (GNU --plus compatibility)
-echo -e "project.tar.gz\nbackup.tar.gz.old" | \
-  parallel echo "File: {} | 1 ext: {.} | 2 ext: {..} | 3 ext: {...}"
+echo -e "project.tar.gz\nfile.min.js.map" | \
+  parallel echo "File: {} | Remove 1: {.} | Remove 2: {..} | Remove 3: {...}"
 ```
 
 ```bash
@@ -168,29 +168,29 @@ echo -e "Hello World\nFOO BAR" | parallel echo "Text: {} | Lower: {v} | Upper: {
 
 ```bash
 # (10) Preserve output order despite varying job times
-seq 5 | parallel -k "sleep $((6 - {})); echo 'Job {} done'"
+seq 5 | parallel -k --shell "sleep \$((6 - {})); echo 'Job {} done'"
 ```
 
 ```bash
 # (11) Limit concurrency and log job details
-parallel -j 2 --joblog build.log "sleep 1; echo 'Built {}'" ::: app1 app2 app3
+parallel -j 2 --joblog build.log echo 'Built {}' ::: app1 app2 app3
 ```
 
 ```bash
 # (12) Tag output lines with their input source
-echo -e "server1\nserver2" | parallel --tag "ping -c 1 {}"
+echo -e "google.com\namazon.com" | parallel --tag ping -c 1 {}
 ```
 
 ## Advanced Features
 
 ```bash
 # (13) Process large files in manageable chunks
-cat huge_dataset.csv | parallel --pipe --block 10M "wc -l"
+cat huge_dataset.csv | parallel --pipe --block 10M --shell "wc -l"
 ```
 
 ```bash
-# (14) Group multiple arguments per command
-echo -e "file1\nfile2\nfile3\nfile4" | parallel -X echo "Batch:" {}
+# (14) Group multiple arguments per command  
+echo -e "file1\nfile2\nfile3\nfile4" | parallel -X -j 1 echo "Processing batch:"
 ```
 
 ```bash
@@ -199,13 +199,14 @@ seq 10 | parallel --shuf --dry-run echo 'Processing {}'
 ```
 
 ```bash
-# (16) Generate all combinations from multiple input sources
-parallel echo "Operation: {} on {}" :::: <(echo -e "backup\narchive") :::: <(echo -e "db.sql\nconfig.json")
+# (16) Generate combinations using structured input
+echo -e "backup:database\narchive:config\nclone:source" | \
+  parallel -C ':' echo "Operation {1} on {2}"
 ```
 
 ```bash
 # (17) Use built-in time and random placeholders
-parallel "echo 'Job {} at {T} (ID: {r})'" ::: task1 task2
+parallel echo 'Job {} at {T} (ID: {r})' ::: task1 task2
 ```
 
 # Command-line options
