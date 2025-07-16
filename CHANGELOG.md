@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [v2.2.1](https://github.com/flesler/parallel/compare/v2.2.0...v2.2.1)
+
+- Improve the readme.js code [`74cb1a4`](https://github.com/flesler/parallel/commit/74cb1a46e8123c59cdc76a6818d64502545db6df)
+- Reorganize and improve 'Differences with GNU parallel' section for accuracy and clarity [`8e78d9a`](https://github.com/flesler/parallel/commit/8e78d9ab3d2930b29116cc9ad9103ed30563daaf)
+- Split README examples into individual bash blocks for easier copy/paste [`4bab99d`](https://github.com/flesler/parallel/commit/4bab99d32bd67dbe9ffd1e4e57278157277f4a3f)
+
 #### [v2.2.0](https://github.com/flesler/parallel/compare/v2.1.0...v2.2.0)
 
 - Add the package name and version to the --help [`592ac0d`](https://github.com/flesler/parallel/commit/592ac0d6f9861511de60c4fbe0b87f3c61bf8543)

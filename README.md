@@ -195,7 +195,7 @@ echo -e "file1\nfile2\nfile3\nfile4" | parallel -X echo "Batch:" {}
 
 ```bash
 # (15) Randomize execution order for testing
-seq 10 | parallel --shuf --dry-run "echo 'Processing {}'"
+seq 10 | parallel --shuf --dry-run echo 'Processing {}'
 ```
 
 ```bash
