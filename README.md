@@ -1,6 +1,13 @@
 parallel
 =======
 
+[![npm version](https://badge.fury.io/js/parallel.svg)](https://badge.fury.io/js/parallel)
+[![npm downloads](https://img.shields.io/npm/dm/parallel.svg)](https://www.npmjs.com/package/parallel)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Node.js Support](https://img.shields.io/badge/node-%3E%3D8.0.0-brightgreen.svg)](https://nodejs.org/)
+[![GitHub stars](https://img.shields.io/github/stars/flesler/parallel.svg)](https://github.com/flesler/parallel/stargazers)
+[![GitHub issues](https://img.shields.io/github/issues/flesler/parallel.svg)](https://github.com/flesler/parallel/issues)
+
 CLI tool to execute shell commands in parallel.
 
 Loosely based on [GNU parallel command](https://www.gnu.org/software/parallel/man.html).
