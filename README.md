@@ -161,11 +161,12 @@ Just like [GNU parallel](https://www.gnu.org/software/parallel/man.html#EXIT-STA
 - `--round-robin` is implicit when `--pipe` is used
 - This module does support piped input and `:::` arguments together unlike GNU's
 - This module won't permutate input from `:::` and from stdin or `--arg-file`
-- GNU's `-m` can be achieved here with `--max-args=0` to distribute all input lines evenly among `--jobs`
+- Supports GNU parallel's `-X/--xargs` for multiple arguments
 - `--shell` was added to allow pipes, redirection, etc
-- `--trim` doesn't support `<n|l|r|lr|rl>`, it trims all spaces, tabs and newlines from both sides
+- `--trim` doesn't support `<n|l|r|lr|rl>`, it trims all spaces, tabs and newlines from both sides (note: `-t` aliases to `--print-commands`, not `--trim`)
 - `--halt-on-error` doesn't support any option, it exits as soon as one job fails
-- A ton of missing options that I consider less useful
+- Supports many GNU parallel features: `--block`, `-t/--print-commands`, `--tag`, `--joblog`, `-k/--keep-order`, `--shuf`, `::::` file syntax
+- Some GNU parallel options are still missing but major functionality is compatible
 - `--plus` is not needed and it supports most of those placeholders
 - This supports various placeholders that GNU's parallel doesn't (see above)
 

@@ -12,7 +12,7 @@ function exec(...args) {
 
 function skipSomeLines() {
   const lines = readFileSync('CHANGELOG.md', 'utf8').split('\n').filter(line => (
-    !/^> /.test(line)
+    !/^(> |- Release \d)/.test(line)
   ))
   const out = lines.join('\n').replace(/\n{3,}/g, '\n\n')
   writeFileSync('CHANGELOG.md', out)
