@@ -2,10 +2,9 @@
 
 const fs = require('fs')
 const help = require('../lib/help')
-const cli = require('../lib/cli')
 
 // Get the help output directly from the help module
-const helpOutput = help.getText(cli.options)
+const helpOutput = help.getText()
 
 let markdown = helpOutput
   .replace(/^(.+):\n/gm, '# $1\n\n```bash\n')
