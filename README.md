@@ -86,58 +86,62 @@ cat ... | parallel --pipe [options] [command [arguments]]
 Input can be provided as command-line arguments preceeded by a `:::`.
 Each argument will be considered a separate input line.
 If you include several `:::`, parallel will use all the permutations between them as input lines.
+
+You can also read arguments from files using `::::` followed by filenames.
+This allows you to combine multiple input sources.
+
 While GNU´s version also permutates stdin and input files, this version won't.
-Check examples (6) and (7) to see this in action.
+You can also combine multiple input files with `::::` to create permutations.
+
+Check examples (8), (10), (11), and (12) to see command-line input in action.
 
 # Examples
 
 ```bash
-# (1) Use all CPUs to grep a file
-cat data.txt | parallel -p grep pattern > out.txt
-```
-```bash
-# (2) Use all CPUs to gunzip and concat files to a single file, 10 per process at a time
-find . -name '*.gz' | parallel -n10 gzip -dc {} > out.txt
-```
-```bash
-# (3) Download files from a list, 10 at a time with all CPUs, use the URL basename as file name
-cat urls.txt | parallel -j10 curl {} -o images/{/}
-```
-```bash
-# (4) Generate 100 URLs and download them with `curl` (uses experimental --shell option)
-seq 100 | parallel -s curl http://xyz.com/image_{}.png \> image_{}.png
-```
-```bash
-# (5) Move each file to a subdir relative to their current dir
-find . -type f | parallel mkdir -p {//}/sub && mv {} {//}/sub/{/}
-```
-```bash
-# (6) Show how to provide input as command-line arguments and what the order is
-echo 4 | parallel -j1 echo ::: 1 2 3
-```
-```bash
-# (7) Rename extension from all txt to log
-parallel mv {} {.}.log ::: *.txt
-```
-```bash
-# (8) Showcase non-positional placeholders
-find . -type f | parallel echo "file={} noext={.} base={/} base_noext={/.} dir={//} jobid={#} jobslot={%} ext={ext} noext2={..} noext3={...} base_noext2={/..} base_noext3={/...} lower={v} upper={^} time={t} timeiso={T} date={d} random={r} md5={md5} len={len} wc={wc}"
-```
-```bash
-# (9) Showcase positional placeholders
-echo A~B.ext~C~D | parallel -C '~' echo {4}+{3}+{2.}+{1}
-```
-```bash
-# (10) Log job details for monitoring and debugging
-find . -name '*.log' | parallel --joblog process.log gzip {}
-```
-```bash
-# (11) Tag output lines to identify which job produced them
-echo -e "server1\nserver2\nserver3" | parallel --tag ping -c 1 {}
-```
-```bash
-# (12) Process files in random order
-find . -name '*.txt' | parallel --shuf wc -l {}
+# (1) Process large datasets with all CPUs
+cat big_data.csv | parallel --pipe --block 1M process_chunk.py
+
+# (2) Convert images with preserved order (slow jobs finish out of order)  
+echo -e "slow.jpg\nfast.jpg\nmedium.jpg" | parallel -k -s "sleep {#}; echo Converting {} to {.}.webp"
+
+# (3) Download files from a list  
+cat urls.txt | parallel curl -L {} -o downloads/{/}
+
+# (4) Run tests in parallel with verbose output  
+find tests -name "*.test.js" | parallel -t npm test {}
+
+# (5) Compress files efficiently using all CPUs
+find . -name '*.log' | parallel gzip {}
+
+# (6) Process data with multiple arguments per job
+echo -e "file1\nfile2\nfile3\nfile4" | parallel -X echo "Processing batch:" {}
+
+# (7) Generate thumbnails with progress tracking
+find photos -name "*.jpg" | parallel --tag convert {} thumbs/{/}
+
+# (8) Batch process with job tracking
+parallel --joblog processing.log ffmpeg -i {} {.}.mp4 ::: *.avi
+
+# (9) Modern file operations with advanced placeholders  
+echo -e "archive.tar.gz\nbackup.tar.gz" | parallel echo "Original: {} | Name: {/..} | Length: {len} chars"
+
+# (10) Database operations in parallel
+parallel -j 4 "psql -c \"UPDATE table SET status='processed' WHERE id={}\"" ::: {1..1000}
+
+# (11) Rename files using transformation placeholders
+parallel mv {} backup_{d}_{/} ::: *.txt
+
+# (12) Process with column data
+echo -e "John,25,Engineer\nJane,30,Designer" | parallel -C ',' echo "Name: {1}, Age: {2}, Job: {3}"
+
+# (13) Keep output order for report generation
+seq 10 | parallel -k "echo 'Processing item {}'; sleep $((RANDOM % 3)); echo 'Result: {}'"
+
+# (14) Read arguments from multiple files (creates permutations)
+parallel echo "Processing {} from {}" :::: servers.txt :::: tasks.txt
+
+# (15) Handle special characters safely  
+find . -name "* *" | parallel -q mv {} "cleaned/{/}"
 ```
 
 # Command-line options
