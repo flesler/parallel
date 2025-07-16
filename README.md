@@ -109,51 +109,118 @@ Check examples (8), (10), (11), and (12) to see command-line input in action.
 
 # Examples
 
+## Basic Parallel Processing
+
 ```bash
-# (1) Process large datasets with all CPUs
-cat big_data.csv | parallel --pipe --block 1M process_chunk.py
+# (1) Download multiple files simultaneously
+echo -e "https://example.com/file1.zip\nhttps://example.com/file2.zip\nhttps://example.com/file3.zip" | \
+  parallel curl -L {} -o downloads/{/}
+# Output: Downloads file1.zip, file2.zip, file3.zip to downloads/ folder
 
-# (2) Convert images with preserved order (slow jobs finish out of order)  
-echo -e "slow.jpg\nfast.jpg\nmedium.jpg" | parallel -k -s "sleep {#}; echo Converting {} to {.}.webp"
+# (2) Convert video files using all CPU cores
+parallel ffmpeg -i {} -c:v libx264 converted/{.}.mp4 ::: *.avi
+# Input: movie1.avi, movie2.avi → Output: converted/movie1.mp4, converted/movie2.mp4
 
-# (3) Download files from a list  
-cat urls.txt | parallel curl -L {} -o downloads/{/}
+# (3) Compress log files efficiently 
+find /var/log -name "*.log" -size +100M | parallel gzip {}
+# Compresses large log files in parallel, saving disk space
+```
 
-# (4) Run tests in parallel with verbose output  
-find tests -name "*.test.js" | parallel -t npm test {}
+## Placeholders & File Processing
 
-# (5) Compress files efficiently using all CPUs
-find . -name '*.log' | parallel gzip {}
+```bash
+# (4) Showcase path manipulation placeholders
+echo -e "/home/user/document.pdf\n/tmp/archive.tar.gz\n/data/backup.tar.gz.enc" | \
+  parallel echo "Full: {} | Dir: {//} | File: {/} | Name: {/.} | Ext: {ext}"
+# Output demonstrates all path components for each file
 
-# (6) Process data with multiple arguments per job
-echo -e "file1\nfile2\nfile3\nfile4" | parallel -X echo "Processing batch:" {}
+# (5) Multi-extension handling (GNU --plus compatibility)
+echo -e "project.tar.gz\nbackup.tar.gz.old" | \
+  parallel echo "File: {} | Remove 1 ext: {.} | Remove 2 ext: {..} | Remove 3 ext: {...}"
+# Shows: project.tar.gz → project.tar → project → project
 
-# (7) Generate thumbnails with progress tracking
-find photos -name "*.jpg" | parallel --tag convert {} thumbs/{/}
+# (6) Count path separators and extensions
+echo -e "/deep/nested/path/file.min.js\nshallow.txt" | \
+  parallel echo "File: {} | Slashes: {+/} | Dots: {+.} | Length: {len} chars"
+# Demonstrates counting placeholders with real examples
+```
 
-# (8) Batch process with job tracking
-parallel --joblog processing.log ffmpeg -i {} {.}.mp4 ::: *.avi
+## Column Processing & Data Manipulation
 
-# (9) Modern file operations with advanced placeholders  
-echo -e "archive.tar.gz\nbackup.tar.gz" | parallel echo "Original: {} | Name: {/..} | Length: {len} chars"
+```bash
+# (7) Process CSV data with column placeholders
+echo -e "John,28,Engineer,San Francisco\nSarah,32,Designer,New York\nMike,25,Developer,Seattle" | \
+  parallel -C ',' echo "Employee: {1} ({2} years old) works as {3} in {4}"
+# Output: Employee: John (28 years old) works as Engineer in San Francisco
 
-# (10) Database operations in parallel
-parallel -j 4 "psql -c \"UPDATE table SET status='processed' WHERE id={}\"" ::: {1..1000}
+# (8) Handle messy input with trimming
+printf "  Alice  \n\t  Bob\t\n   Charlie   \n" | \
+  parallel echo "Original: '{}' ({len} chars) | Cleaned: '{trim}'"
+# Shows whitespace removal: '  Alice  ' (8 chars) | Cleaned: 'Alice'
 
-# (11) Rename files using transformation placeholders
-parallel mv {} backup_{d}_{/} ::: *.txt
+# (9) Text transformations
+echo -e "Hello World\nFOO BAR\nmixed CaSe" | \
+  parallel echo "Original: {} | Lower: {v} | Upper: {^} | Words: {wc}"
+# Demonstrates case conversion and word counting
+```
 
-# (12) Process with column data
-echo -e "John,25,Engineer\nJane,30,Designer" | parallel -C ',' echo "Name: {1}, Age: {2}, Job: {3}"
+## Job Management & Control
 
-# (13) Keep output order for report generation
-seq 10 | parallel -k "echo 'Processing item {}'; sleep $((RANDOM % 3)); echo 'Result: {}'"
+```bash
+# (10) Keep output order for reports (jobs finish at different times)
+seq 5 | parallel -k "echo 'Starting job {}'; sleep $((6 - {})); echo 'Job {} completed'"
+# Output appears in order 1,2,3,4,5 despite job 5 finishing first
 
-# (14) Read arguments from multiple files (creates permutations)
-parallel echo "Processing {} from {}" :::: servers.txt :::: tasks.txt
+# (11) Process with limited concurrency and job tracking
+parallel -j 2 --joblog build.log "echo 'Building {}'; sleep 2; echo 'Built {}'" ::: app1 app2 app3 app4
+# Limits to 2 concurrent jobs, logs timing and exit codes to build.log
 
-# (15) Handle special characters safely  
-find . -name "* *" | parallel -q mv {} "cleaned/{/}"
+# (12) Tag output to identify source
+echo -e "server1\nserver2\nserver3" | parallel --tag "ping -c 1 {} | grep 'time='"
+# Each output line prefixed with server name for identification
+```
+
+## Advanced Features
+
+```bash
+# (13) Process large files in chunks (pipe mode)
+cat huge_dataset.csv | parallel --pipe --block 10M "wc -l | xargs echo 'Chunk has {} lines'"
+# Splits large file into 10MB chunks, processes each in parallel
+
+# (14) Multiple argument processing with context
+echo -e "file1.txt\nfile2.txt\nfile3.txt\nfile4.txt" | parallel -X echo "Batch processing:" {}
+# Groups multiple files per command: "Batch processing: file1.txt file2.txt ..."
+
+# (15) Randomize job order and dry-run
+seq 10 | parallel --shuf --dry-run "echo 'Processing item {}'"
+# Shows commands in random order without executing (useful for testing)
+
+# (16) File permutations from multiple sources
+echo -e "backup\narchive" > operations.txt
+echo -e "database.sql\nconfig.json" > files.txt
+parallel echo "Operation: {} on file: {}" :::: operations.txt :::: files.txt
+# Creates all combinations: backup+database.sql, backup+config.json, etc.
+
+# (17) Safe handling of files with special characters
+find . -name "*[[:space:]]*" | parallel -q mv {} "cleaned_files/{/}"
+# Safely renames files containing spaces or special characters
+
+# (18) Time-based operations with built-in placeholders
+parallel "echo 'Job {} started at {T} (timestamp: {t}) with random ID: {r}'" ::: task1 task2
+# Uses current time, timestamp, and random number placeholders
+```
+
+## Database & Network Operations
+
+```bash
+# (19) Parallel database updates with progress
+seq 1000 | parallel -j 10 "psql -c \"UPDATE users SET last_seen='{T}' WHERE id={}\""
+# Updates 1000 user records with current timestamp, 10 concurrent connections
+
+# (20) Network testing with detailed output
+echo -e "google.com\ngithub.com\nstackoverflow.com" | \
+  parallel --tag "curl -w 'Response time: %{time_total}s\n' -o /dev/null -s {}"
+# Tests response times for multiple sites with tagged output
 ```
 
 # Command-line options
@@ -169,18 +236,24 @@ parallel supports command-line options in all these formats (all equivalent):
 Just like [GNU parallel](https://www.gnu.org/software/parallel/man.html#EXIT-STATUS) does, the exit code will be the amount of jobs that failed (up to 101). It means that if any job fails, "global" exit code will be non-zero as well. You can add `--halt-on-error` to abort as soon as one job fails.
 
 # Differences with [GNU parallel](https://www.gnu.org/software/parallel/man.html)
-- Added aliases to some options: `-p` -> `--pipe`, `-D` -> `--dry-run`
+
+## ✅ **GNU Parallel Compatible Features**
+- Full placeholder compatibility: `{..}`, `{...}`, `{/..}`, `{/...}`, `{+/}`, `{+.}`, etc.
+- Standard options: `-t/--print-commands`, `--tag`, `--joblog`, `-k/--keep-order`, `--shuf`, `--block`
+- File input: `::::` file syntax and `-a/--arg-file`
+- Job control: `-X/--xargs`, `--halt-on-error`, `-p/--pipe`, `-D/--dry-run`
+
+## 🔧 **Enhanced Features** 
+- **Better defaults**: Default jobs = CPU count (not unlimited)
+- **Input flexibility**: Supports piped input + `:::` arguments together (GNU doesn't)
+- **Additional placeholders**: `{ext}`, `{v}`, `{^}`, `{t}`, `{T}`, `{d}`, `{r}`, `{md5}`, `{len}`, `{wc}`, `{trim}`
+- **Simplified usage**: `--plus` not needed (features auto-enabled)
+
+## ⚠️ **Simplified Behaviors**
 - `--round-robin` is implicit when `--pipe` is used
-- This module does support piped input and `:::` arguments together unlike GNU's
-- This module won't permutate input from `:::` and from stdin or `--arg-file`
-- Supports GNU parallel's `-X/--xargs` for multiple arguments
-- `--shell` was added to allow pipes, redirection, etc
-- `--trim` doesn't support `<n|l|r|lr|rl>`, it trims all spaces, tabs and newlines from both sides (note: `-t` aliases to `--print-commands`, not `--trim`)
-- `--halt-on-error` doesn't support any option, it exits as soon as one job fails
-- Supports many GNU parallel features: `--block`, `-t/--print-commands`, `--tag`, `--joblog`, `-k/--keep-order`, `--shuf`, `::::` file syntax
-- Some GNU parallel options are still missing but major functionality is compatible
-- `--plus` is not needed and it supports most of those placeholders
-- This supports various placeholders that GNU's parallel doesn't (see above)
+- `--trim` only does full trim (no `<n|l|r|lr|rl>` options)
+- `--halt-on-error` is binary (no complex exit condition options)
+- No input permutation between `:::` and stdin/`--arg-file`
 
 # License
 
