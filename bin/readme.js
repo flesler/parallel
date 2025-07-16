@@ -2,6 +2,7 @@
 
 const fs = require('fs')
 const help = require('../lib/help')
+const util = require('../lib/util')
 
 // Get the help output directly from the help module
 const helpOutput = help.getText()
@@ -13,12 +14,12 @@ let markdown = helpOutput
 
 const lines = markdown.split('\n').slice(2, -2)
 const firstLine = lines[0].trim()
-const lastLine = lines.slice(-2).join('\n').trim()
+const lastLine = '# Input from command-line arguments'
 
 const readmePath = 'README.md'
 const readme = fs.readFileSync(readmePath, 'utf8')
 
-const pattern = new RegExp(`${escape(firstLine)}[\\s\\S]*?${escape(lastLine)}`)
+const pattern = new RegExp(`${util.escapeRegex(firstLine)}[\\s\\S]*?(?=\n+${util.escapeRegex(lastLine)})`)
 markdown = lines.join('\n').trim()
 const updatedReadme = readme.replace(pattern, () => markdown)
 
@@ -27,8 +28,4 @@ if (updatedReadme === readme) {
 } else {
   fs.writeFileSync(readmePath, updatedReadme)
   console.log('Updated README.md with current --help output')
-}
-
-function escape(str) {
-  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 }
