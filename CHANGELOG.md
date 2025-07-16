@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [v2.2.0](https://github.com/flesler/parallel/compare/v2.1.0...v2.2.0)
+
+- Add the package name and version to the --help [`592ac0d`](https://github.com/flesler/parallel/commit/592ac0d6f9861511de60c4fbe0b87f3c61bf8543)
+- Move placeholders that are GNU-compliant to the right section [`6307b04`](https://github.com/flesler/parallel/commit/6307b049c850ed0725d08c0009c1977bcd3e5874)
+- Fix help not getting the options in one case [`3db9936`](https://github.com/flesler/parallel/commit/3db9936faee86e43ed93ba4829f2f01837ea4f52)
+- The placeholder documentation in --help and README.md are now programmatically generated [`8d5f95c`](https://github.com/flesler/parallel/commit/8d5f95cc81e29c4edafd5f8de6f972254d39a038)
+- Add {+/} placeholder to count forward slashes (GNU parallel --plus compatibility) [`789d289`](https://github.com/flesler/parallel/commit/789d2897d985c10ff2c88023d19926623ab13455)
+- Add {+.} placeholder to count dots (GNU parallel --plus compatibility) [`f49b58f`](https://github.com/flesler/parallel/commit/f49b58fc9a92c00f31068fee629784f631d42a96)
+- Add {trim} placeholder to remove leading/trailing whitespace [`cb4008d`](https://github.com/flesler/parallel/commit/cb4008d40e378267ae5fe9741518b46ad0234123)
+
 #### [v2.1.0](https://github.com/flesler/parallel/compare/v2.0.0...v2.1.0)
 
 - Add professional badges to README for npm, downloads, license, and GitHub stats [`6e495ee`](https://github.com/flesler/parallel/commit/6e495ee62398731fd624a41d26547237e4e0ae33)

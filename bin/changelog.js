@@ -3,6 +3,7 @@ const { readFileSync, writeFileSync } = require('fs')
 const { execSync } = require('child_process')
 
 // $ node bin/changelog.js
+// FIXME: Doesn't include the last release until tagged (catch 22)
 
 function exec(...args) {
   const command = args.join(' ')
