@@ -73,6 +73,7 @@ cat ... | parallel --pipe [options] [command [arguments]]
 {/..}  the basename without two extensions (e.g., path/file.tar.gz → file)
 {/...} the basename without three extensions (e.g., path/file.tar.gz.backup → file)
 {+/}   the number of "/" in the input line
+{+.}   the number of "." in the input line
 {n}    nth input column, followed by any operator above (f.e {2/.})
 ```
 
