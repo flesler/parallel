@@ -69,16 +69,16 @@ cat ... | parallel --pipe [options] [command [arguments]]
 {n}  nth input column, followed by any operator above (f.e {2/.})
 {#}  the sequence number of the job to run, [1,]
 {%}  the job slot number [1, --jobs]
+{..} the input line without two extensions (e.g., file.tar.gz → file)
+{...} the input line without three extensions (e.g., file.tar.gz.backup → file)
+{/..} the basename without two extensions (e.g., path/file.tar.gz → file)
+{/...} the basename without three extensions (e.g., path/file.tar.gz.backup → file)
 ```
 
 # Non-GNU placeholders
 
 ```bash
-{..} the input line without two extensions (e.g., file.tar.gz → file)
-{...} the input line without three extensions (e.g., file.tar.gz.backup → file)
 {ext} the extension of the input line
-{/..} the basename without two extensions (e.g., path/file.tar.gz → file)
-{/...} the basename without three extensions (e.g., path/file.tar.gz.backup → file)
 {v} lower case the value
 {^} upper case the value
 {t} current time as a number
