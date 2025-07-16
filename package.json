@@ -3,7 +3,17 @@
   "author": "Ariel Flesler <aflesler@gmail.com>",
   "version": "1.3.1",
   "description": "CLI tool to execute shell commands in parallel, based on GNU parallel command",
-  "keywords": ["parallel", "cli", "concurrent", "commands", "gnu", "execute", "standard", "input", "stdin"],
+  "keywords": [
+    "parallel",
+    "cli",
+    "concurrent",
+    "commands",
+    "gnu",
+    "execute",
+    "standard",
+    "input",
+    "stdin"
+  ],
   "license": "MIT",
   "homepage": "https://github.com/flesler/parallel",
   "bugs": "https://github.com/flesler/parallel/issues",
@@ -19,6 +29,7 @@
   "engines": {
     "node": "*"
   },
-  "dependencies": {},
-  "devDependencies": {}
+  "devDependencies": {
+    "auto-changelog": "^2.5.0"
+  }
 }
