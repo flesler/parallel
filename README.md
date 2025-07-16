@@ -22,11 +22,11 @@ $ npm install -g parallel
 # Usage
 
 ```bash
-
 parallel [options] [command [arguments]] < list_of_arguments
 parallel [options] [command [arguments]] (::: arguments)...
 cat ... | parallel --pipe [options] [command [arguments]]
 ```
+
 # Options
 
 ```bash
@@ -57,6 +57,7 @@ cat ... | parallel --pipe [options] [command [arguments]]
 --help                  Print this message and exit
 --version               Print the comand version and exit
 ```
+
 # Placeholders
 
 ```bash
@@ -69,6 +70,7 @@ cat ... | parallel --pipe [options] [command [arguments]]
 {#}  the sequence number of the job to run, [1,]
 {%}  the job slot number [1, --jobs]
 ```
+
 # Non-GNU placeholders
 
 ```bash

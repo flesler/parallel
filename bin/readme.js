@@ -8,11 +8,11 @@ const cli = require('../lib/cli')
 const helpOutput = help.getText(cli.options)
 
 let markdown = helpOutput
-  .replace(/^  (.+):\n/gm, '# $1\n\n```bash\n')
-  .replace(/^( {4}.*\n)\n/gm, '$1```\n')
-  .replace(/^ {4}/gm, '')
+  .replace(/^(.+):\n/gm, '# $1\n\n```bash\n')
+  .replace(/^( {2}.*\n)\n/gm, '$1```\n\n')
+  .replace(/^ {2}/gm, '')
 
-const lines = markdown.split('\n').slice(2, -1)
+const lines = markdown.split('\n').slice(2, -2)
 const firstLine = lines[0].trim()
 const lastLine = lines.slice(-2).join('\n').trim()
 
