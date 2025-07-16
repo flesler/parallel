@@ -30,10 +30,12 @@ cat ... | parallel --pipe [options] [command [arguments]]
 -0, --null              Use NUL as delimiter
 -q, --quote             Quote each input line in case they contain special caracters
 --quote-all             Quote each input line in case they contain special caracters (alias for --quote)
--t, --trim              Removes spaces, tabs and new lines around the input lines
+--trim                  Removes spaces, tabs and new lines around the input lines
+-t, --print-commands    Print the jobs which parallel is running to stderr
 -C, --colsep <regex>    Column separator for positional placeholders [default " "]
 -a, --arg-file <file>   Use file as input source instead of stdin
 -p, --pipe              Spread input lines to jobs via their stdin
+--block <size>          Size of each block in --pipe mode (e.g., 1M, 10K)
 -D, --dry-run           Print commands to run without running them
 --tag                   Prefix each line of output with the argument that generated it
 --shuf                  Randomize the order of jobs
