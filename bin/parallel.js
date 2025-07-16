@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-var
+const
   opts = require('../lib/opts'),
   jobs = require('../lib/jobs'),
   util = require('../lib/util'),
@@ -11,7 +11,7 @@ process.setMaxListeners(Infinity)
 
 cli.parse(process.argv.slice(2))
 
-if (opts.pipeMode) {
+if (opts.pipe) {
   jobs.spawnPiped()
 }
 
