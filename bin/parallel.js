@@ -4,15 +4,15 @@ var
   jobs = require('../lib/jobs'),
   util = require('../lib/util'),
   input = require('../lib/input'),
-  cli = require('../lib/cli');
+  cli = require('../lib/cli')
 
-process.on('uncaughtException', util.fatal);
-process.setMaxListeners(Infinity);
+process.on('uncaughtException', util.fatal)
+process.setMaxListeners(Infinity)
 
-cli.parse(process.argv.slice(2));
+cli.parse(process.argv.slice(2))
 
 if (opts.pipeMode) {
-  jobs.spawnPiped();
+  jobs.spawnPiped()
 }
 
-input.open();
+input.open()
