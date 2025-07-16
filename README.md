@@ -17,18 +17,16 @@ $ npm install -g parallel
 ```bash
 # Pass input lines as command-line arguments
 input | parallel [options] cmd [cmd-options] {} > output
-
 # Pipe input lines through the jobs stdin
 input | parallel [options] --pipe cmd [cmd-options] > output
 ```
-
 # Options
 
 ```bash
--j, --jobs <n>          Max processes to run in parallel (0 for ∞) [default CPUs]
+-j, --jobs <n>          Max processes to run in parallel (0 for ∞) [default 20]
 -n, --max-args <args>   Number of input lines per command line [default 1]
 -d, --delimiter <delim> Input items are terminated by delim [default \n]
--0, --null              Use NUL as delimiter, alias for -d $'\\0'
+-0, --null              Use NUL as delimiter
 -q, --quote             Quote each input line in case they contain special caracters
 -t, --trim              Removes spaces, tabs and new lines around the input lines
 -C, --colsep <regex>    Column separator for positional placeholders [default " "]
@@ -36,43 +34,37 @@ input | parallel [options] --pipe cmd [cmd-options] > output
 -p, --pipe              Spread input lines to jobs via their stdin
 -D, --dry-run           Print commands to run without running them
 --tag                   Prefix each line of output with the argument that generated it
---joblog <file>         Log job details (start time, runtime, exit code, command) to file
 --shuf                  Randomize the order of jobs
+--joblog <file>         Log job details (start time, runtime, exit code, command) to file
 --bg                    Run commands in background and exit
 --delay <secs>          Wait before starting new jobs, secs can be less than 1 [default 0]
---timeout <secs>        If the command runs longer than secs it gets killed with SIGTERM [default 0]
+--timeout <secs>        If the command runs for longer than secs it will get killed with SIGTERM [default 0]
 --halt-on-error         Kill all jobs and exit if any job exits with a code other than 0 [default false]
 -v, --verbose           Output timing information to stderr
 -s, --shell             Wrap command with shell (supports escaped pipes, redirection, etc.) [experimental]
 --help                  Print this message and exit
 --version               Print the comand version and exit
 ```
+# Placeholders
 
-# Arguments placeholders
-
-Unless `--pipe` is used, the input lines will be sent to jobs as command-line arguments. You can include placeholders and they will be replaced with each input line.
-If no placeholder is found, input lines will be appended to the end as last arguments.
-Everything around each placeholder will be repeated for each input line. Use quotes to include spaces or escape them with backslashes.
-
-```
-{}   input line
-{.}  input line without extension
-{/}  basename of the input line
-{//} dirname of the input line
-{/.} basename of the input line without extension
+```bash
+{}   the input line
+{.}  the input line without extension
+{/}  the basename of the input line
+{//} the dirname of the input line
+{/.} the basename of the input line without extension
 {n}  nth input column, followed by any operator above (f.e {2/.})
-{#}  sequence number of the job to run [1, ∞]
-{%}  job slot number [1, --jobs]
+{#}  the sequence number of the job to run, [1,]
+{%}  the job slot number [1, --jobs]
 ```
+# Non-GNU placeholders
 
-These are not in the original GNU parallel, but were implemented here:
-
-```
-{..} input line without two extensions (e.g., file.tar.gz → file)
-{...} input line without three extensions (e.g., file.tar.gz.backup → file)
-{/..} basename without two extensions (e.g., path/file.tar.gz → file)
-{/...} basename without three extensions (e.g., path/file.tar.gz.backup → file)
-{ext} extension of the input line
+```bash
+{..} the input line without two extensions (e.g., file.tar.gz → file)
+{...} the input line without three extensions (e.g., file.tar.gz.backup → file)
+{ext} the extension of the input line
+{/..} the basename without two extensions (e.g., path/file.tar.gz → file)
+{/...} the basename without three extensions (e.g., path/file.tar.gz.backup → file)
 {v} lower case the value
 {^} upper case the value
 {t} current time as a number
@@ -80,8 +72,8 @@ These are not in the original GNU parallel, but were implemented here:
 {d} current date in ISO format
 {r} random number between 100000 and 999999
 {md5} MD5 hash of the input line
-{len} length of the input line in characters
-{wc} word count of the input line
+{len} the length of the input line in characters
+{wc} the word count of the input line
 ```
 
 # Input from command-line arguments
@@ -165,20 +157,8 @@ Just like [GNU parallel](https://www.gnu.org/software/parallel/man.html#EXIT-STA
 - `--trim` doesn't support `<n|l|r|lr|rl>`, it trims all spaces, tabs and newlines from both sides
 - `--halt-on-error` doesn't support any option, it exits as soon as one job fails
 - A ton of missing options that I consider less useful
-- `--plus` placeholders are not supported
-- But this supports various placeholders that GNU's parallel doesn't (see above)
-- Many more
-
-# ToDo
-- Implement backpressure to pause input if output is overwhelmed
-- Support `--header` for working with CSV-like files
-- Should it permutate lines from stdin and `--arg-file` ?
-- Could implement `--keep-order`
-- Use [node-shell-quote](https://github.com/substack/node-shell-quote) for `--dry-run` and `--shell`?
-- Clean up `jobs` module, maybe create a `job` module with some of its logic
-- Maybe avoid pre-spawning jobs when piping. Spawn on demand when overwhelmed, support `--delay` there too
-- Support multiple `-a`? can be achieved with `cat a b c` though, maybe it's pointless
-- Allow placeholders to be chained as such: `{..|v|md5}` (get the extension, then lowercase, then md5)
+- `--plus` is not needed and it supports most of those placeholders
+- This supports various placeholders that GNU's parallel doesn't (see above)
 
 # License
 
