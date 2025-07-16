@@ -109,118 +109,103 @@ Check examples (8), (10), (11), and (12) to see command-line input in action.
 
 # Examples
 
-## Basic Parallel Processing
+## Basic Operations
 
 ```bash
-# (1) Download multiple files simultaneously
-echo -e "https://example.com/file1.zip\nhttps://example.com/file2.zip\nhttps://example.com/file3.zip" | \
-  parallel curl -L {} -o downloads/{/}
-# Output: Downloads file1.zip, file2.zip, file3.zip to downloads/ folder
+# (1) Download files simultaneously 
+echo -e "https://example.com/file1.zip\nhttps://example.com/file2.zip" | parallel curl -L {} -o downloads/{/}
+```
 
+```bash
 # (2) Convert video files using all CPU cores
 parallel ffmpeg -i {} -c:v libx264 converted/{.}.mp4 ::: *.avi
-# Input: movie1.avi, movie2.avi → Output: converted/movie1.mp4, converted/movie2.mp4
+```
 
-# (3) Compress log files efficiently 
+```bash
+# (3) Compress large log files efficiently
 find /var/log -name "*.log" -size +100M | parallel gzip {}
-# Compresses large log files in parallel, saving disk space
 ```
 
 ## Placeholders & File Processing
 
 ```bash
-# (4) Showcase path manipulation placeholders
-echo -e "/home/user/document.pdf\n/tmp/archive.tar.gz\n/data/backup.tar.gz.enc" | \
+# (4) Demonstrate path manipulation placeholders
+echo -e "/home/user/document.pdf\n/tmp/archive.tar.gz" | \
   parallel echo "Full: {} | Dir: {//} | File: {/} | Name: {/.} | Ext: {ext}"
-# Output demonstrates all path components for each file
+```
 
-# (5) Multi-extension handling (GNU --plus compatibility)
+```bash
+# (5) Multi-extension removal (GNU --plus compatibility)
 echo -e "project.tar.gz\nbackup.tar.gz.old" | \
-  parallel echo "File: {} | Remove 1 ext: {.} | Remove 2 ext: {..} | Remove 3 ext: {...}"
-# Shows: project.tar.gz → project.tar → project → project
+  parallel echo "File: {} | 1 ext: {.} | 2 ext: {..} | 3 ext: {...}"
+```
 
-# (6) Count path separators and extensions
+```bash
+# (6) Count characters in paths and filenames
 echo -e "/deep/nested/path/file.min.js\nshallow.txt" | \
-  parallel echo "File: {} | Slashes: {+/} | Dots: {+.} | Length: {len} chars"
-# Demonstrates counting placeholders with real examples
+  parallel echo "File: {} | Slashes: {+/} | Dots: {+.} | Length: {len}"
 ```
 
 ## Column Processing & Data Manipulation
 
 ```bash
 # (7) Process CSV data with column placeholders
-echo -e "John,28,Engineer,San Francisco\nSarah,32,Designer,New York\nMike,25,Developer,Seattle" | \
-  parallel -C ',' echo "Employee: {1} ({2} years old) works as {3} in {4}"
-# Output: Employee: John (28 years old) works as Engineer in San Francisco
+echo -e "John,28,Engineer\nSarah,32,Designer" | \
+  parallel -C ',' echo "Employee: {1} ({2} years old) works as {3}"
+```
 
-# (8) Handle messy input with trimming
-printf "  Alice  \n\t  Bob\t\n   Charlie   \n" | \
-  parallel echo "Original: '{}' ({len} chars) | Cleaned: '{trim}'"
-# Shows whitespace removal: '  Alice  ' (8 chars) | Cleaned: 'Alice'
+```bash
+# (8) Clean whitespace from messy input
+printf "  Alice  \n\t  Bob\t\n" | parallel echo "Original: '{}' | Cleaned: '{trim}'"
+```
 
-# (9) Text transformations
-echo -e "Hello World\nFOO BAR\nmixed CaSe" | \
-  parallel echo "Original: {} | Lower: {v} | Upper: {^} | Words: {wc}"
-# Demonstrates case conversion and word counting
+```bash
+# (9) Transform text case and count words
+echo -e "Hello World\nFOO BAR" | parallel echo "Text: {} | Lower: {v} | Upper: {^} | Words: {wc}"
 ```
 
 ## Job Management & Control
 
 ```bash
-# (10) Keep output order for reports (jobs finish at different times)
-seq 5 | parallel -k "echo 'Starting job {}'; sleep $((6 - {})); echo 'Job {} completed'"
-# Output appears in order 1,2,3,4,5 despite job 5 finishing first
+# (10) Preserve output order despite varying job times
+seq 5 | parallel -k "sleep $((6 - {})); echo 'Job {} done'"
+```
 
-# (11) Process with limited concurrency and job tracking
-parallel -j 2 --joblog build.log "echo 'Building {}'; sleep 2; echo 'Built {}'" ::: app1 app2 app3 app4
-# Limits to 2 concurrent jobs, logs timing and exit codes to build.log
+```bash
+# (11) Limit concurrency and log job details
+parallel -j 2 --joblog build.log "sleep 1; echo 'Built {}'" ::: app1 app2 app3
+```
 
-# (12) Tag output to identify source
-echo -e "server1\nserver2\nserver3" | parallel --tag "ping -c 1 {} | grep 'time='"
-# Each output line prefixed with server name for identification
+```bash
+# (12) Tag output lines with their input source
+echo -e "server1\nserver2" | parallel --tag "ping -c 1 {}"
 ```
 
 ## Advanced Features
 
 ```bash
-# (13) Process large files in chunks (pipe mode)
-cat huge_dataset.csv | parallel --pipe --block 10M "wc -l | xargs echo 'Chunk has {} lines'"
-# Splits large file into 10MB chunks, processes each in parallel
-
-# (14) Multiple argument processing with context
-echo -e "file1.txt\nfile2.txt\nfile3.txt\nfile4.txt" | parallel -X echo "Batch processing:" {}
-# Groups multiple files per command: "Batch processing: file1.txt file2.txt ..."
-
-# (15) Randomize job order and dry-run
-seq 10 | parallel --shuf --dry-run "echo 'Processing item {}'"
-# Shows commands in random order without executing (useful for testing)
-
-# (16) File permutations from multiple sources
-echo -e "backup\narchive" > operations.txt
-echo -e "database.sql\nconfig.json" > files.txt
-parallel echo "Operation: {} on file: {}" :::: operations.txt :::: files.txt
-# Creates all combinations: backup+database.sql, backup+config.json, etc.
-
-# (17) Safe handling of files with special characters
-find . -name "*[[:space:]]*" | parallel -q mv {} "cleaned_files/{/}"
-# Safely renames files containing spaces or special characters
-
-# (18) Time-based operations with built-in placeholders
-parallel "echo 'Job {} started at {T} (timestamp: {t}) with random ID: {r}'" ::: task1 task2
-# Uses current time, timestamp, and random number placeholders
+# (13) Process large files in manageable chunks
+cat huge_dataset.csv | parallel --pipe --block 10M "wc -l"
 ```
 
-## Database & Network Operations
+```bash
+# (14) Group multiple arguments per command
+echo -e "file1\nfile2\nfile3\nfile4" | parallel -X echo "Batch:" {}
+```
 
 ```bash
-# (19) Parallel database updates with progress
-seq 1000 | parallel -j 10 "psql -c \"UPDATE users SET last_seen='{T}' WHERE id={}\""
-# Updates 1000 user records with current timestamp, 10 concurrent connections
+# (15) Randomize execution order for testing
+seq 10 | parallel --shuf --dry-run "echo 'Processing {}'"
+```
 
-# (20) Network testing with detailed output
-echo -e "google.com\ngithub.com\nstackoverflow.com" | \
-  parallel --tag "curl -w 'Response time: %{time_total}s\n' -o /dev/null -s {}"
-# Tests response times for multiple sites with tagged output
+```bash
+# (16) Generate all combinations from multiple input sources
+parallel echo "Operation: {} on {}" :::: <(echo -e "backup\narchive") :::: <(echo -e "db.sql\nconfig.json")
+```
+
+```bash
+# (17) Use built-in time and random placeholders
+parallel "echo 'Job {} at {T} (ID: {r})'" ::: task1 task2
 ```
 
 # Command-line options
