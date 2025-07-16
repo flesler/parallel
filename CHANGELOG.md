@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [v2.1.0](https://github.com/flesler/parallel/compare/v2.0.0...v2.1.0)
+
+- Add professional badges to README for npm, downloads, license, and GitHub stats [`6e495ee`](https://github.com/flesler/parallel/commit/6e495ee62398731fd624a41d26547237e4e0ae33)
+- Refactor README generation in help.js and update README with no leading spaces [`df5bf58`](https://github.com/flesler/parallel/commit/df5bf5825e65e738cf42f16d69db9b6236f23186)
+- Show help when parallel is run with no arguments and no piped input [`2d00685`](https://github.com/flesler/parallel/commit/2d00685fcc05dbc19043a5366a6ea25722343280)
+
 ### [v2.0.0](https://github.com/flesler/parallel/compare/1.3.1...v2.0.0)
 
 - Add placeholders for double extension handling [`29b4481`](https://github.com/flesler/parallel/commit/29b44819835ead96f3677f91229e5bbc5fcf0e69)

@@ -38,18 +38,16 @@ function safe(fn, ...args) {
 }
 
 git('pull', '--rebase', 'origin', 'master')
-// auto-changelog works with the online repo so all must be pushed
-git('push', 'origin', 'master')
 npm('--no-git-tag-version', 'version', bump)
 
 // After npm version updated the version
 const pkg = require('../package.json')
-
 const tag = `v${pkg.version}`
-
 // If they exist remove them first
 safe(git, 'tag', '-d', tag)
 safe(git, 'push', 'origin', '--delete', tag)
+// auto-changelog works with the online repo so all must be pushed
+git('push', 'origin', 'master')
 
 if (!dryRun) {
   require('./changelog')
