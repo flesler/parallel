@@ -22,9 +22,9 @@ $ npm install -g parallel
 # Usage
 
 ```bash
-parallel [options] [command [arguments]] < list_of_arguments
-parallel [options] [command [arguments]] (::: arguments)...
-cat ... | parallel --pipe [options] [command [arguments]]
+parallel [options] [command [arguments]] < arguments
+parallel [options] [command [arguments]] ::: arguments
+cat/ls/etc ... | parallel [options] [command [arguments]]
 ```
 
 # Options
@@ -61,7 +61,7 @@ cat ... | parallel --pipe [options] [command [arguments]]
 # Placeholders
 
 ```bash
-{}     the input line
+{}     the input line, added implicitly if no placeholder is used
 {.}    the input line without extension
 {/}    the basename of the input line
 {//}   the dirname of the input line
