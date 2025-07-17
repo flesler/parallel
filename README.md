@@ -87,8 +87,8 @@ cat ... | parallel --pipe [options] [command [arguments]]
 {trim} the input line with leading/trailing whitespace removed
 {v}    lower case the value
 {^}    upper case the value
-{t}    current time as a number
-{T}    current time in ISO as a string
+{t}    current date-time as a number
+{T}    current date-time in ISO format
 {d}    current date in ISO format
 {r}    random number between 100000 and 999999
 {md5}  MD5 hash of the input line
@@ -116,7 +116,7 @@ Check examples (8), (10), (11), and (12) to see command-line input in action.
 
 (1) Download files simultaneously 
 ```bash
-echo -e "https://example.com/file1.zip\nhttps://example.com/file2.zip" | parallel curl -L {} -o downloads/{/}
+cat urls.txt | parallel curl -L {} -o downloads/{/}
 ```
 
 (2) Convert video files using all CPU cores
@@ -160,6 +160,8 @@ echo -e "John,28,Engineer\nSarah,32,Designer" | \
 (8) Clean whitespace from messy input
 ```bash
 printf "  Alice  \n\t  Bob\t\n" | parallel echo "Original: '{}' | Cleaned: '{trim}'"
+# Or
+printf "  Alice  \n\t  Bob\t\n" | parallel --trim echo Cleaned: {}
 ```
 
 (9) Transform text case and count words
@@ -171,7 +173,7 @@ echo -e "Hello World\nFOO BAR" | parallel echo "Text: {} | Lower: {v} | Upper: {
 
 (10) Preserve output order despite varying job times
 ```bash
-seq 5 | parallel -k --shell "sleep \$((6 - {})); echo 'Job {} done'"
+seq 5 | parallel --keep-order --shell "sleep \$((6 - {})); echo 'Job {} done'"
 ```
 
 (11) Limit concurrency and log job details
@@ -188,7 +190,7 @@ echo -e "google.com\namazon.com" | parallel --tag ping -c 1 {}
 
 (13) Process large files in manageable chunks
 ```bash
-cat huge_dataset.csv | parallel --pipe --block 10M --shell "wc -l"
+cat huge_dataset.csv | parallel --pipe --block 10M wc -c
 ```
 
 (14) Group multiple arguments per command  
