@@ -2,10 +2,6 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
-#### [v2.3.1](https://github.com/flesler/parallel/compare/v2.3.0...v2.3.1)
-
-- Changed the date/time placeholders to return proper ISO and not under_score ISO [`1363a3e`](https://github.com/flesler/parallel/commit/1363a3ed91270480906aedc820207da367104304)
-
 #### [v2.3.0](https://github.com/flesler/parallel/compare/v2.2.1...v2.3.0)
 
 - Improve placeholder handling and README examples [`fa76f36`](https://github.com/flesler/parallel/commit/fa76f367f61d3666737640f2ae3250590969f9aa)
