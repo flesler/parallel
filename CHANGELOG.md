@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [v2.3.0](https://github.com/flesler/parallel/compare/v2.2.1...v2.3.0)
+
+- Improve placeholder handling and README examples [`fa76f36`](https://github.com/flesler/parallel/commit/fa76f367f61d3666737640f2ae3250590969f9aa)
+- Add {+..} and {+...} placeholders for GNU --plus compatibility [`1ddc917`](https://github.com/flesler/parallel/commit/1ddc91777b5d8be9798a7d37d91d3c7f7d73d972)
+- Implemet a {##} placeholder, require some refactoring for cleaner buffering support [`775861e`](https://github.com/flesler/parallel/commit/775861e8de2287e435bd43491d8fd2f9940717e3)
+- Simplify the default --jobs handling for --help [`840ba62`](https://github.com/flesler/parallel/commit/840ba624438a92b3dddcafe1ba7c1b18a9650890)
+- Improve option combination validation and --block implies --pipe [`e7a4881`](https://github.com/flesler/parallel/commit/e7a4881c7e48007d1dc98720ce87bd6bbcb6c16f)
+
 #### [v2.2.1](https://github.com/flesler/parallel/compare/v2.2.0...v2.2.1)
 
 - Improve the readme.js code [`74cb1a4`](https://github.com/flesler/parallel/commit/74cb1a46e8123c59cdc76a6818d64502545db6df)

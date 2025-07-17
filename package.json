@@ -1,7 +1,7 @@
 {
   "name": "parallel",
   "author": "Ariel Flesler <aflesler@gmail.com>",
-  "version": "2.2.1",
+  "version": "2.3.0",
   "description": "CLI tool to execute shell commands in parallel, based on GNU parallel command",
   "keywords": [
     "parallel",

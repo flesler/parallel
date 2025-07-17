@@ -4,7 +4,7 @@ const { execSync } = require('child_process')
 
 // $ node bin/changelog.js minor --dry-run
 
-const BUMPS = ['major', 'minor', 'patch']
+const BUMPS = ['major', 'minor', 'patch', 'none']
 
 const bump = process.argv[2] || 'minor'
 const dryRun = process.argv[3] === '--dry-run'
@@ -38,7 +38,9 @@ function safe(fn, ...args) {
 }
 
 git('pull', '--rebase', 'origin', 'master')
-npm('--no-git-tag-version', 'version', bump)
+if (bump !== 'none') {
+  npm('--no-git-tag-version', 'version', bump)
+}
 
 // After npm version updated the version
 const pkg = require('../package.json')

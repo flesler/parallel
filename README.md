@@ -114,101 +114,101 @@ Check examples (8), (10), (11), and (12) to see command-line input in action.
 
 ## Basic Operations
 
+(1) Download files simultaneously 
 ```bash
-# (1) Download files simultaneously 
 echo -e "https://example.com/file1.zip\nhttps://example.com/file2.zip" | parallel curl -L {} -o downloads/{/}
 ```
 
+(2) Convert video files using all CPU cores
 ```bash
-# (2) Convert video files using all CPU cores
 parallel ffmpeg -i {} -c:v libx264 converted/{.}.mp4 ::: *.avi
 ```
 
+(3) Compress large log files efficiently
 ```bash
-# (3) Compress large log files efficiently
 find /var/log -name "*.log" -size +100M | parallel gzip {}
 ```
 
 ## Placeholders & File Processing
 
+(4) Demonstrate path manipulation placeholders
 ```bash
-# (4) Demonstrate path manipulation placeholders
 echo -e "/home/user/document.pdf\n/tmp/archive.tar.gz" | \
   parallel echo "Full: {} | Dir: {//} | File: {/} | Name: {/.} | Ext: {ext}"
 ```
 
+(5) Multi-extension removal (GNU --plus compatibility)
 ```bash
-# (5) Multi-extension removal (GNU --plus compatibility)
 echo -e "project.tar.gz\nfile.min.js.map" | \
   parallel echo "File: {} | Remove 1: {.} | Remove 2: {..} | Remove 3: {...}"
 ```
 
+(6) Count characters in paths and filenames
 ```bash
-# (6) Count characters in paths and filenames
 echo -e "/deep/nested/path/file.min.js\nshallow.txt" | \
   parallel echo "File: {} | Slashes: {+/} | Dots: {+.} | Length: {len}"
 ```
 
 ## Column Processing & Data Manipulation
 
+(7) Process CSV data with column placeholders
 ```bash
-# (7) Process CSV data with column placeholders
 echo -e "John,28,Engineer\nSarah,32,Designer" | \
   parallel -C ',' echo "Employee: {1} ({2} years old) works as {3}"
 ```
 
+(8) Clean whitespace from messy input
 ```bash
-# (8) Clean whitespace from messy input
 printf "  Alice  \n\t  Bob\t\n" | parallel echo "Original: '{}' | Cleaned: '{trim}'"
 ```
 
+(9) Transform text case and count words
 ```bash
-# (9) Transform text case and count words
 echo -e "Hello World\nFOO BAR" | parallel echo "Text: {} | Lower: {v} | Upper: {^} | Words: {wc}"
 ```
 
 ## Job Management & Control
 
+(10) Preserve output order despite varying job times
 ```bash
-# (10) Preserve output order despite varying job times
 seq 5 | parallel -k --shell "sleep \$((6 - {})); echo 'Job {} done'"
 ```
 
+(11) Limit concurrency and log job details
 ```bash
-# (11) Limit concurrency and log job details
 parallel -j 2 --joblog build.log echo 'Built {}' ::: app1 app2 app3
 ```
 
+(12) Tag output lines with their input source
 ```bash
-# (12) Tag output lines with their input source
 echo -e "google.com\namazon.com" | parallel --tag ping -c 1 {}
 ```
 
 ## Advanced Features
 
+(13) Process large files in manageable chunks
 ```bash
-# (13) Process large files in manageable chunks
 cat huge_dataset.csv | parallel --pipe --block 10M --shell "wc -l"
 ```
 
+(14) Group multiple arguments per command  
 ```bash
-# (14) Group multiple arguments per command  
 echo -e "file1\nfile2\nfile3\nfile4" | parallel -X -j 1 echo "Processing batch:"
 ```
 
+(15) Randomize execution order for testing
 ```bash
-# (15) Randomize execution order for testing
 seq 10 | parallel --shuf --dry-run echo 'Processing {}'
 ```
 
+(16) Generate combinations using structured input
 ```bash
-# (16) Generate combinations using structured input
 echo -e "backup:database\narchive:config\nclone:source" | \
   parallel -C ':' echo "Operation {1} on {2}"
 ```
 
+(17) Use built-in time and random placeholders
 ```bash
-# (17) Use built-in time and random placeholders
 parallel echo 'Job {} at {T} (ID: {r})' ::: task1 task2
 ```
 
