@@ -13,9 +13,9 @@ echo "=================================================="
 echo "GNU PARALLEL OUTPUT:"
 echo "=================================================="
 if [ -n "$input_file" ]; then
-    $parallel_path "$@" < "$input_file"
+    $parallel_path --plus "$@" < "$input_file"
 else
-    $parallel_path "$@"
+    $parallel_path --plus "$@"
 fi
 
 echo ""
