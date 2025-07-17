@@ -68,6 +68,7 @@ cat ... | parallel --pipe [options] [command [arguments]]
 {/.}   the basename of the input line without extension
 {#}    the sequence number of the job to run, [1,]
 {%}    the job slot number [1, --jobs]
+{##}   total number of jobs to be run
 {..}   the input line without two extensions (e.g., file.tar.gz → file)
 {...}  the input line without up to three extensions (e.g., file.tar.gz.backup → file)
 {/..}  the basename without two extensions (e.g., path/file.tar.gz → file)
