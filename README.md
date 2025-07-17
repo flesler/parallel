@@ -226,7 +226,7 @@ parallel supports command-line options in all these formats (all equivalent):
 # Exit code
 Just like [GNU parallel](https://www.gnu.org/software/parallel/man.html#EXIT-STATUS) does, the exit code will be the amount of jobs that failed (up to 101). It means that if any job fails, "global" exit code will be non-zero as well. You can add `--halt-on-error` to abort as soon as one job fails.
 
-# Differences with [GNU parallel](https://www.gnu.org/software/parallel/man.html)
+# Comparison to [GNU parallel](https://www.gnu.org/software/parallel/man.html)
 
 ## ✅ **GNU Parallel Compatible Features**
 - Full placeholder compatibility: `{..}`, `{...}`, `{/..}`, `{/...}`, `{+/}`, `{+.}`, etc.
